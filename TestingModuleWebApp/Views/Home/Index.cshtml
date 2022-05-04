@@ -1,0 +1,39 @@
+﻿@model AnswersTask
+
+@{
+    ViewData["Title"] = "Home Page";
+    int x = @Model.Mass;
+
+    int y = @Model.Mass;
+
+
+}
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="ajax.js"></script>
+
+<div class="text-center">
+    <h1 class="display-4">Тренажер по решению сквозных задач</h1>
+</div>
+<div class="form-group">
+    <label>Тело массой <b>m = @Model.Mass КГ</b> движется по закону: <b><i>X = X₀ + U₀t + at²/2</i></b></label>
+</div>
+<div>
+    <label>Дано уравнение: <b>X = @Model.R_x0 @Model._znak @Model.R_u0 t + t²</b></label>
+</div>
+<form method="post" asp-action="MyPost">
+  <div class="form-group">
+    <label asp-for="_a">Полное ускорение в начальный момент времени</label>
+    <input asp-for="_a" class="form-control" placeholder="Введите ответ">
+    <span asp-validation-for="_a" class="text-danger"></span>
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+<form method="get">
+  <div>
+    <label for="searchGenre">Genre to look for:</label>
+    <input type="text" name="searchGenre" value="" />
+    <input type="Submit" value="Search Genre" /><br/>
+    (Leave blank to list all movies.)<br/>
+    </div>
+</form>
