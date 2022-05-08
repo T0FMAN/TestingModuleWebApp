@@ -1,0 +1,31 @@
+﻿@model IEnumerable<User> 
+
+@{
+    ViewData["Title"] = "Список пользователей";
+}
+
+<a asp-controller="Users" asp-action="Create" type="button" class="btn btn-sm btn-outline-secondary">Добавить</a>
+
+<div class="album py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            @foreach(var item in Model)
+            {
+                <div class="col-md-4">
+                    <div class="card mb-4 box-shadow">
+                        <div class="card-body">
+                            <p class="card-text">ID пользователя: @item.Id (@item.Username)</p>
+                            <small class="text-muted">Email: @item.Email</small>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <a asp-controller="Users" asp-action="Detail" asp-route-id="@item.Id" type="button" class="btn btn-sm btn-outline-secondary">Просмотр</a>
+                                    <a asp-controller="Users" asp-action="Edit" asp-route-id="@item.Id" type="button" class="btn btn-sm btn-outline-secondary">Редактировать</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
