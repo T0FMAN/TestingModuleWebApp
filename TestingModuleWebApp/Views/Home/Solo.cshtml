@@ -1,0 +1,47 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<head>
+	<meta charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="~/css/site.css"/>
+	<link rel="stylesheet" href="~/css/blocks.css"/>
+</head>
+
+<div class="text-center">
+    <h1 class="display-4">Тренажер по решению сквозных задач</h1>
+</div>
+
+<a asp-controller="Home" asp-action="Index" type="button" class="btn btn-sm btn-outline-secondary">Multi element</a>
+
+<div class="quiz" id="quiz">
+	<div class="quiz-header" id="header">
+	<!-- Заголовок вопроса -->
+	<h2 class="title">Загружаем вопрос...</h2>
+	<!-- Результаты викторины -->
+	<h2 class="title">%title%</h2>
+	<h3 class="summary">%message%</h3>
+	<p class="result">%result%</p>
+	</div>
+	<ul class="quiz-list" id="list">
+		<li>
+			<label>
+				<input type="radio" class="answer" name="answer" />
+				<span>Ответ...</span>
+			</label>
+		</li>
+		<li>
+			<label>
+				<input type="radio" class="answer" name="answer" />
+				<span>Ответ...</span>
+			</label>
+		</li>
+	</ul>
+	<button class="quiz-submit submit" id="submit">Ответить</button>
+</div>
+
+<script src="~/js/question.js"></script>

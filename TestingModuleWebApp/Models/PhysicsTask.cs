@@ -2,12 +2,7 @@
 
 namespace TestingModuleWebApp.Models
 {
-    public class Ans
-    {
-        public int A { get; set; }
-    }
-
-    public class AnswersTask
+    public class PhysicsTask
     {
         public int Mass { get; set; }
 
@@ -17,7 +12,7 @@ namespace TestingModuleWebApp.Models
 
         public int R_u0 { get; set; }
 
-        public AnswersTask()
+        public PhysicsTask()
         {
             Random random = new();
 

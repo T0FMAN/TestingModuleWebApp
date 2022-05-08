@@ -2,7 +2,6 @@
 using TestingModuleWebApp.Data;
 using TestingModuleWebApp.Interfaces;
 using TestingModuleWebApp.Models;
-using TestingModuleWebApp.ViewModels;
 
 namespace TestingModuleWebApp.Controllers
 {
@@ -28,6 +27,7 @@ namespace TestingModuleWebApp.Controllers
             return View(user);
         }
 
+        [HttpGet]
         public IActionResult Create()
         {
             return View();
