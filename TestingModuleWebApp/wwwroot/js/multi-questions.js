@@ -1,8 +1,8 @@
-﻿class Question {
+﻿class Task {
 	x = getNumb();
 	y = getNumb();
 	s = getSymb();
-	question = getQuest(this.x, this.y, this.s);
+	task = getTask(this.x, this.y, this.s);
 	rightAns = calculate(this.x, this.y, this.s);
 	userAns = 0;
 	isRight;
@@ -24,9 +24,9 @@ function calculate(x, y, s) {
 	}
 }
 
-function getQuest(x, y, s) {
-	const question = `${x} ${s} ${y}`;
-	return question;
+function getTask(x, y, s) {
+	const task = `${x} ${s} ${y}`;
+	return task;
 }
 
 function getNumb() {
@@ -46,12 +46,12 @@ function getSymb() {
 }
 
 const questions = [
-	new Question(),
-	new Question(),
-	new Question(),
-	new Question(),
-	new Question(),
-	new Question(),
+	new Task(),
+	new Task(),
+	new Task(),
+	new Task(),
+	new Task(),
+	new Task(),
 ];
 
 const headersContainer = document.querySelectorAll('#header');
@@ -77,7 +77,7 @@ function showQuestion() {
 		const titleTemplate = '<h2 class="taskTitle">Задача: %title%</h2>';
 
 		const indexTask = indexTaskTemplate.replace('%quest%', `${questionIndex + 1}/${questions.length}`);
-		const titleTask = titleTemplate.replace('%title%', questions[questionIndex].question);
+		const titleTask = titleTemplate.replace('%title%', questions[questionIndex].task);
 
 		n.innerHTML = indexTask;
 		n.innerHTML += titleTask;
@@ -125,7 +125,7 @@ function showResults() {
 	title = 'Результаты теста:'
 
 	switch (score) {
-		case 2:
+		case 6:
 			message = 'Тест пройден на 100 баллов!';
 			break;
 		default: message = 'Тест не пройден';

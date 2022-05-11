@@ -1,8 +1,8 @@
-﻿class Question {
+﻿class Task {
 	x = getNumb();
 	y = getNumb();
 	s = getSymb();
-	question = getQuest(this.x, this.y, this.s);
+	task = getTask(this.x, this.y, this.s);
 	rightAns = calculate(this.x, this.y, this.s);
 	userAns;
 	isRight;
@@ -24,7 +24,7 @@ function calculate(x, y, s) {
 	}
 }
 
-function getQuest(x, y, s) {
+function getTask(x, y, s) {
 	const question = `${x} ${s} ${y}`;
 	return question;
 }
@@ -46,8 +46,8 @@ function getSymb() {
 }
 
 const questions = [
-	new Question(),
-	new Question(),
+	new Task(),
+	new Task(),
 ];
 
 const headerContainer = document.querySelector('#header');
@@ -69,7 +69,7 @@ function clearPage() {
 function showQuestion() {
 	const headerTemplate = '<h2 class="title">%title%</h2>';
 	const questNTemplate = '<h2 class="questN">%quest%</h2>';
-	const title = headerTemplate.replace('%title%', questions[questionIndex].question);
+	const title = headerTemplate.replace('%title%', questions[questionIndex].task);
 	const questN = questNTemplate.replace('%quest%', questionIndex+1 + '/' + questions.length)
 	headerContainer.innerHTML = questN;
 	headerContainer.innerHTML += title;

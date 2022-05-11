@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TestingModuleWebApp.Data;
 
@@ -10,9 +11,10 @@ using TestingModuleWebApp.Data;
 namespace TestingModuleWebApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220510212321_UpdUserFK_Tutors")]
+    partial class UpdUserFK_Tutors
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.4");
@@ -200,7 +202,6 @@ namespace TestingModuleWebApp.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<int?>("TutorId")
-                        .IsRequired()
                         .HasColumnType("INTEGER");
 
                     b.Property<bool>("TwoFactorEnabled")
@@ -335,9 +336,7 @@ namespace TestingModuleWebApp.Migrations
                 {
                     b.HasOne("TestingModuleWebApp.Models.Tutor", "Tutor")
                         .WithMany()
-                        .HasForeignKey("TutorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("TutorId");
 
                     b.Navigation("Tutor");
                 });

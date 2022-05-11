@@ -1,13 +1,13 @@
 ﻿@model string
 
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Домашняя";
 
 	<link rel="stylesheet" href="~/css/site.css"/>
-	<script src="~/js/getModel_JSON.js" type="text/javascript"></script>
+	//<script src="~/js/getModel_JSON.js" type="text/javascript"></script>
 }
 
-<body onload="loadPage(@Model)">
+@*<body onload="loadPage(@Model)">*@
 
 <div class="text-center">
     <h1 class="display-4">Тренажер по решению сквозных задач</h1>
@@ -90,4 +90,4 @@
 <button class="quiz-submit submit" id="submit">Ответить</button>
 
 <script src="~/js/multi-questions.js"></script>
-</body>
+@*</body>*@

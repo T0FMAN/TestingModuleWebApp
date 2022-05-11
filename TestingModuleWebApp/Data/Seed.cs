@@ -5,7 +5,7 @@ namespace TestingModuleWebApp.Data
 {
     public class Seed
     {
-        /*
+        
         public static async Task SeedUsersAndRolesAsync(IApplicationBuilder applicationBuilder)
         {
             using (var serviceScope = applicationBuilder.ApplicationServices.CreateScope())
@@ -27,15 +27,10 @@ namespace TestingModuleWebApp.Data
                 {
                     var newAdminUser = new AppUser()
                     {
-                        UserName = "teddysmithdev",
+                        UserName = "tofman",
                         Email = adminUserEmail,
                         EmailConfirmed = true,
-                        Address = new Address()
-                        {
-                            Street = "123 Main St",
-                            City = "Charlotte",
-                            State = "NC"
-                        }
+                        GroupId = Enum.Groups.ISP3418BO,
                     };
                     await userManager.CreateAsync(newAdminUser, "Coding@1234?");
                     await userManager.AddToRoleAsync(newAdminUser, UserRoles.Admin);
@@ -46,16 +41,17 @@ namespace TestingModuleWebApp.Data
                 var appUser = await userManager.FindByEmailAsync(appUserEmail);
                 if (appUser == null)
                 {
-                    var newAppUser = new User()
+                    var newAppUser = new AppUser()
                     {
                         UserName = "app-user",
                         Email = appUserEmail,
                         EmailConfirmed = true,
+                        GroupId = Enum.Groups.ISP1218BO,
                     };
                     await userManager.CreateAsync(newAppUser, "Coding@1234?");
                     await userManager.AddToRoleAsync(newAppUser, UserRoles.User);
                 }
             }
-        }*/
+        }
     }
 }

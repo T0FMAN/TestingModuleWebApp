@@ -1,16 +1,16 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using TestingModuleWebApp.Models;
 
 namespace TestingModuleWebApp.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<AppUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
 
         }
-
-        public DbSet<User> Users { get; set; }
-        //public DbSet<Group> Groups { get; set; }
+        public DbSet<AppUser> AspNetUsers { get; set; }
+        public DbSet<Tutor> Tutors { get; set; }
     }
 }

@@ -1,10 +1,7 @@
 ﻿@model IEnumerable<AppUser> 
 
 @{
-    ViewData["Title"] = "Список пользователей";
 }
-
-<a asp-controller="Users" asp-action="Create" type="button" class="btn btn-sm btn-outline-secondary">Добавить</a>
 
 <div class="album py-5 bg-light">
     <div class="container">
@@ -14,7 +11,7 @@
                 <div class="col-md-4">
                     <div class="card mb-4 box-shadow">
                         <div class="card-body">
-                            <p class="card-text">ID пользователя: @item.Id (@item.UserName)</p>
+                            <p class="card-text">ID пользователя: @item.Id</p>
                             <small class="text-muted">Email: @item.Email</small>
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="btn-group">

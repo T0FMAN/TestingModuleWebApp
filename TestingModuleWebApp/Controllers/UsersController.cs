@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using TestingModuleWebApp.Data;
 using TestingModuleWebApp.Interfaces;
 using TestingModuleWebApp.Models;
@@ -8,79 +9,90 @@ namespace TestingModuleWebApp.Controllers
 {
     public class UsersController : Controller
     {
-        private readonly IUserRepository _userRepo;
+        private readonly IAspNetUserRepository _aspNetUserRepo;
 
-        public UsersController(IUserRepository UserRepo)
+        public UsersController(IAspNetUserRepository aspNetUser)
         {
-            _userRepo = UserRepo;
+            _aspNetUserRepo = aspNetUser;
         }
+        
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var users = await _userRepo.GetAll();
+            var users = await _aspNetUserRepo.GetAll();
             return View(users);
         }
+
         [HttpGet]
-        public async Task<IActionResult> Detail(int id)
+        public async Task<IActionResult> AspNetUsers()
         {
-            var user = await _userRepo.GetByIdAsync(id);
+            var users = await _aspNetUserRepo.GetAll();
+            return View(users);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Detail(string id)
+        {
+            var user = await _aspNetUserRepo.GetByIdAsync(id);
 
             return View(user);
         }
+        
         [HttpGet]
         public IActionResult Create()
         {
             return View();
         }
+        
         [HttpPost]
-        public IActionResult Create(User user)
+        public IActionResult Create(AppUser user)
         {
             if (!ModelState.IsValid)
             {
                 return View(user);
             }
-            _userRepo.Add(user);
+            _aspNetUserRepo.Add(user);
 
             return RedirectToAction("Index");
         }
+        
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            var user = await _userRepo.GetByIdAsync(id);
+            //var user = await _aspNetUserRepo.GetByIdAsync(id);
 
-            if (user == null) return View("Error");
+            //if (user == null) return View("Error");
 
-            var userVM = new EditUserViewModel
-            {
-                Username = user.Username,
-                Password = user.Password,
-                Email = user.Email,
-                GroupId = user.GroupId,
-                IsAdmin = user.IsAdmin,
-            };
-            return View(userVM);
+            //var userVM = new EditUserViewModel
+            //{
+            //    Username = user.Username,
+            //    Password = user.Password,
+            //    Email = user.Email,
+            //    GroupId = user.GroupId,
+            //    IsAdmin = user.IsAdmin,
+            //};
+            //return View(userVM);
+            return View();
         }
-        [HttpPost]
-        public async Task<IActionResult> Edit(int id, EditUserViewModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                ModelState.AddModelError(string.Empty, "Неуспешная попытка редактирования пользователя");
-                return View("Edit", model);
-            }
-            var user = new User
-            {
-                Id = id,
-                Username = model.Username,
-                Password = model.Password,
-                Email = model.Email,
-                GroupId = model.GroupId,
-                IsAdmin =model.IsAdmin,
-            };
+        
+        //[HttpPost]
+        //public IActionResult Edit(int id)
+        //{
+        //    //if (!ModelState.IsValid)
+        //    //{
+        //    //    ModelState.AddModelError(string.Empty, "Неуспешная попытка редактирования пользователя");
+        //    //    return View("Edit", editUserViewModel);
+        //    //}
+        //    //var user = new AspNetUser
+        //    //{
+        //    //    UserName = editUserViewModel.UserName,
+        //    //    Email = editUserViewModel.Email,
+        //    //    GroupId = editUserViewModel.GroupId,
+        //    //};
 
-            _userRepo.Update(user);
+        //    //_aspNetUserRepo.Update(user);
 
-            return RedirectToAction("Index");
-        }
+        //    return View("Index");
+        //}
     }
 }
