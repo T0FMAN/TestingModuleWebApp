@@ -8,11 +8,11 @@ using TestingModuleWebApp.ViewModels;
 namespace TestingModuleWebApp.Controllers
 {
     [Authorize(Roles = "admin")]
-    public class UsersController : Controller
+    public class UserController : Controller
     {
         private readonly IAppUserRepository _appUserRepository;
 
-        public UsersController(IAppUserRepository appUser)
+        public UserController(IAppUserRepository appUser)
         {
             _appUserRepository = appUser;
         }

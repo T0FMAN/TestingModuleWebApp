@@ -6,11 +6,13 @@
 @inject IAppUserRepository UserRepo
 
 @{
+    var isAuthenticated = User.Identity?.IsAuthenticated == true;
+
     var currentYear = DateTime.Now.ToString("yyyy");
 
     var user = new AppUser();
 
-    if (User.Identity.IsAuthenticated)
+    if (isAuthenticated)
     {
         //var managerU = await UserManager.GetUserAsync(User);
         user = await UserRepo.GetByContext(User);
@@ -44,17 +46,17 @@
                         @if (SignInManager.IsSignedIn(User))
                         {
                             <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Тесты</a>
+                                <a class="nav-link" asp-area="" asp-controller="Test" asp-action="Index">Тесты</a>
                             </li>
                             @if (User.IsInRole("admin"))
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link" asp-area="" asp-controller="Users" asp-action="Index">Пользователи</a>
+                                    <a class="nav-link" asp-area="" asp-controller="User" asp-action="Index">Пользователи</a>
                                 </li>
                             }
                         }
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Tutors" asp-action="Index">Преподаватели</a>
+                            <a class="nav-link" asp-area="" asp-controller="Tutor" asp-action="Index">Преподаватели</a>
                         </li>
                     </ul>
                     @if (SignInManager.IsSignedIn(User))

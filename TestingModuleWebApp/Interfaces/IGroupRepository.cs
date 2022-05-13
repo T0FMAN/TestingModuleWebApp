@@ -4,6 +4,6 @@ namespace TestingModuleWebApp.Interfaces
 {
     public interface IGroupRepository
     {
-        Task<IEnumerable<Group>> GetAll();
+        Task<List<string>> GetAllTitlesList();
     }
 }

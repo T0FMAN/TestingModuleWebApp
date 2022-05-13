@@ -6,12 +6,12 @@ using TestingModuleWebApp.ViewModels;
 
 namespace TestingModuleWebApp.Controllers
 {
-    public class TutorsController : Controller
+    public class TutorController : Controller
     {
-        private readonly ILogger<TutorsController> _logger;
+        private readonly ILogger<TutorController> _logger;
         private readonly ITutorRepository _tutorRepository;
 
-        public TutorsController(ILogger<TutorsController> logger, ITutorRepository tutorRepository)
+        public TutorController(ILogger<TutorController> logger, ITutorRepository tutorRepository)
         {
             _tutorRepository = tutorRepository;
             _logger = logger;

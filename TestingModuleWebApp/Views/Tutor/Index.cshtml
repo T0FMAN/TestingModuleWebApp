@@ -20,10 +20,10 @@
                             <small class="text-muted">Email: @item.Email</small>
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="btn-group">
-                                    <a asp-controller="Tutors" asp-action="Detail" asp-route-id="@item.Id" type="button" class="btn btn-sm btn-outline-secondary">Просмотр</a>
+                                    <a asp-controller="Tutor" asp-action="Detail" asp-route-id="@item.Id" type="button" class="btn btn-sm btn-outline-secondary">Просмотр</a>
                                     @if (User.IsInRole("admin"))
                                     {
-                                        <a asp-controller="Tutors" asp-action="Edit" asp-route-id="@item.Id" type="button" class="btn btn-sm btn-outline-secondary">Редактировать</a>
+                                        <a asp-controller="Tutor" asp-action="Edit" asp-route-id="@item.Id" type="button" class="btn btn-sm btn-outline-secondary">Редактировать</a>
                                     }
                                 </div>
                             </div>

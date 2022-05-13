@@ -34,11 +34,9 @@ namespace TestingModuleWebApp.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var groups = await _groupRepository.GetAll();
+            var groups = await _groupRepository.GetAllTitlesList();
 
-            var titlesGroups = groups.Select(x => x.Title).ToList();
-
-            ViewBag.Groups = new SelectList(titlesGroups);
+            ViewBag.Groups = new SelectList(groups);
 
             return View();
         }
@@ -91,6 +89,8 @@ namespace TestingModuleWebApp.Controllers
 
         void SendMail(MailerMessage mailer)
         {
+            try
+            {
                 MailMessage message = new(mailer.FromAdress, mailer.ToAdress);
 
                 message.Body = mailer.Body;
@@ -106,8 +106,8 @@ namespace TestingModuleWebApp.Controllers
                 smtpClient.Credentials = new NetworkCredential(mailer.FromAdress.Address, "fioletovo21");
 
                 smtpClient.Send(message);
-            
-           // catch (Exception ex) { _logger.Log(LogLevel.Warning, ex.Message) ; }
+            }
+            catch (Exception ex) { _logger.Log(LogLevel.Warning, ex.Message) ; }
         }
 
         void WriteSheets()

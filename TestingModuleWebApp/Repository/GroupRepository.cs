@@ -14,9 +14,9 @@ namespace TestingModuleWebApp.Repository
             _context = context;
         }
 
-        public async Task<IEnumerable<Group>> GetAll()
+        public async Task<List<string>> GetAllTitlesList()
         {
-            return await _context.Groups!.ToListAsync();
+            return await _context.Groups!.Select(x => x.Title).ToListAsync();
         }
     }
 }
