@@ -1,4 +1,5 @@
-﻿@model string
+﻿
+@model IEnumerable<Group>
 
 @{
     ViewData["Title"] = "Домашняя";
@@ -12,6 +13,14 @@
 <div class="text-center">
     <h1 class="display-4">Тренажер по решению сквозных задач</h1>
 </div>
+
+
+					  <div class="col">                        
+                        <select  asp-items="@ViewBag.Groups" class="form-control form-control-lg">
+                                <option>--Select--</option>
+                        </select>
+                        <span class="text-danger"></span>
+                      </div>
 
 <a asp-controller="Home" asp-action="Solo" type="button" class="btn btn-sm btn-outline-secondary">Solo element</a>
 

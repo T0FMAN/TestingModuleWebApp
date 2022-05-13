@@ -10,7 +10,7 @@ namespace TestingModuleWebApp.Data
         {
 
         }
-        public DbSet<AppUser> AspNetUsers { get; set; }
+        public DbSet<Group> Groups { get; set; }
         public DbSet<Tutor> Tutors { get; set; }
     }
 }

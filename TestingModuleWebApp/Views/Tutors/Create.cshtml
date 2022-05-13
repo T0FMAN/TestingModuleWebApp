@@ -1,0 +1,65 @@
+﻿@using TestingModuleWebApp.ViewModels
+@model CreateTutorViewModel
+
+@{
+    ViewData["Title"] = "Добавление преподавателя";
+}
+
+<div class="navbar-container">
+    </div>
+    <div class="main-container">
+      <section class="space-sm">
+        <div class="container">
+          <div class="row mb-5">
+            <!--end of col-->
+          </div>
+          <!--end of row-->
+          <div class="row flex-md-row card card-md">
+            <div class="card-body bg-secondary">
+              <div class="text-center mb-5">
+                <h1 class="h2 mb-2">Create your own race</h1>
+                <span>Challenge the runners in your community</span>
+              </div>
+              <div class="row justify-content-center">
+                <div class="col-6 col-lg-5">
+                  <form method="post" asp-action="Create" enctype="multipart/form-data">
+                   @*<input type="hidden" id="AppUserId" name="AppUserId" asp-for="Id" />*@
+                    <div class="form-row form-group">
+                      <div class="col">                       
+                        <input asp-for="FirstName" class="form-control form-control-lg" placeholder="Имя"/>
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                      </div>
+                    </div>
+                    <div class="form-row form-group">
+                      <div class="col">                        
+                        <input asp-for="LastName" class="form-control form-control-lg" placeholder="Фамилия"/>
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                      </div>
+                    </div> 
+                    <div class="form-row form-group">
+                      <div class="col">                       
+                        <input asp-for="ThirdName" class="form-control form-control-lg" placeholder="Отчество"/>
+                        <span asp-validation-for="ThirdName" class="text-danger"></span>
+                      </div>
+                    </div>
+                    <div class="form-row form-group">
+                      <div class="col">                        
+                        <input asp-for="Email" class="form-control form-control-lg" placeholder="Email" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                      </div>
+                    </div> 
+                    <div class="form-row form-group">
+                      <div class="col">
+                        <button class="btn btn-block btn-success btn-lg" type="submit">Create Account</button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--end of container-->
+      </section>
+      <!--end of section-->
+    </div>

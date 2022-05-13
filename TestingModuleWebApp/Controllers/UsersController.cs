@@ -7,33 +7,27 @@ using TestingModuleWebApp.ViewModels;
 
 namespace TestingModuleWebApp.Controllers
 {
+    [Authorize(Roles = "admin")]
     public class UsersController : Controller
     {
-        private readonly IAspNetUserRepository _aspNetUserRepo;
+        private readonly IAppUserRepository _appUserRepository;
 
-        public UsersController(IAspNetUserRepository aspNetUser)
+        public UsersController(IAppUserRepository appUser)
         {
-            _aspNetUserRepo = aspNetUser;
+            _appUserRepository = appUser;
         }
         
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var users = await _aspNetUserRepo.GetAll();
-            return View(users);
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> AspNetUsers()
-        {
-            var users = await _aspNetUserRepo.GetAll();
+            var users = await _appUserRepository.GetAll();
             return View(users);
         }
 
         [HttpGet]
         public async Task<IActionResult> Detail(string id)
         {
-            var user = await _aspNetUserRepo.GetByIdAsync(id);
+            var user = await _appUserRepository.GetById(id);
 
             return View(user);
         }
@@ -51,7 +45,7 @@ namespace TestingModuleWebApp.Controllers
             {
                 return View(user);
             }
-            _aspNetUserRepo.Add(user);
+            _appUserRepository.Add(user);
 
             return RedirectToAction("Index");
         }

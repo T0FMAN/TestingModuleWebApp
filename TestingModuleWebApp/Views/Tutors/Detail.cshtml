@@ -1,13 +1,14 @@
-﻿@model AppUser
+﻿@model Tutor
+
 @{
-    ViewData["Title"] = @Model.UserName;
+    ViewData["Title"] = $"{Model.LastName}{Model.FirstName}{Model.ThirdName}";
 }
 
 <!-- Page Content -->
 <div class="container">
 
     <!-- Portfolio Item Heading -->
-    <h1 class="my-4">@Model.UserName
+    <h1 class="my-4">@Model.LastName @Model.FirstName @Model.ThirdName
       <small>Secondary Text</small>
     </h1>
   
@@ -19,7 +20,7 @@
       </div>
   
       <div class="col-md-4">
-        <h3 class="my-3">Группа @Model.GroupId</h3>
+        <h3 class="my-3">Group</h3>
         <p>Email: @Model.Email</p>
         <h3 class="my-3">Project Details</h3>
         <ul>

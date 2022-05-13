@@ -1,29 +1,46 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Mail;
 using TestingModuleWebApp.Data;
-using TestingModuleWebApp.Data.Enum;
+using TestingModuleWebApp.Interfaces;
 using TestingModuleWebApp.Models;
-using static TestingModuleWebApp.Data.Dictionaries;
 
 namespace TestingModuleWebApp.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly IGroupRepository _groupRepository;
+        private readonly IAppUserRepository _appUserRepository;
+
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
-        private readonly ApplicationDbContext _context;
+
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ApplicationDbContext context)
+        public HomeController(ILogger<HomeController> logger, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IGroupRepository groupRepository, IAppUserRepository appUserRepository)
         {
-            _context = context;
+            _logger = logger;
             _userManager = userManager;
             _signInManager = signInManager;
-            _logger = logger;
+            _groupRepository = groupRepository;
+            _appUserRepository = appUserRepository;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Index()
+        {
+            var groups = await _groupRepository.GetAll();
+
+            var titlesGroups = groups.Select(x => x.Title).ToList();
+
+            ViewBag.Groups = new SelectList(titlesGroups);
+
+            return View();
         }
 
         [HttpGet]
@@ -32,52 +49,48 @@ namespace TestingModuleWebApp.Controllers
             return View();
         }
         
+        [Authorize]
         [HttpPost]
         public async void PrepareMail(int score, string tasksArr)
         {
-            try
+            if (_signInManager.IsSignedIn(User) && User.IsInRole("user"))
             {
-                if (_signInManager.IsSignedIn(User))
+                var appUser = await _appUserRepository.GetByContext(User);
+
+                var tasks = JsonConvert.DeserializeObject<List<BodyTask>>(tasksArr)!;
+
+                var name = appUser.FirstName;
+                var lastname = appUser.LastName;
+                var groupTitle = appUser.Group?.Title;
+
+                string messageBody = $"Правильных ответов {score} из {tasks.Count}\n";
+                string messageSubject = $"Новое решение сквозной задачи по физике от " +
+                                        $"{lastname} {name} {groupTitle}";
+
+                int i = 1;
+                foreach (var task in tasks)
                 {
-                    AppUser aspNetUser = await _userManager.FindByNameAsync(User.Identity.Name);
+                    string taskTemplate = $"Задача #{i}: {task.Task}\n" +
+                                          $"Правильный ответ: {task.RightAnswer}\n" +
+                                          $"Ответ пользователя: {task.UserAnswer} ({task.IsRight})\n";
 
-                    var tasks = JsonConvert.DeserializeObject<List<BodyTask>>(tasksArr)!;
-
-                    var name = aspNetUser.FirstName;
-                    var lastname = aspNetUser.LastName;
-                    var groupId = aspNetUser.GroupId;
-
-                    string messageBody = $"Правильных ответов {score} из {tasks.Count}\n";
-                    string messageSubject = $"Новое решение сквозной задачи по физике от " +
-                                            $"{lastname} {name} {GetGroup(groupId)}";
-
-                    int i = 1;
-                    foreach (var task in tasks)
-                    {
-                        string taskTemplate = $"Задача #{i}: {task.Task}\n" +
-                                              $"Правильный ответ: {task.RightAnswer}\n" +
-                                              $"Ответ пользователя: {task.UserAnswer} ({task.IsRight})\n";
-
-                        messageBody += taskTemplate;
-                        i++;
-                    }
-
-                    var fromAdress = new MailAddress("rucraccou@gmail.com", "Модуль тестирования");
-                    var toAdress = new MailAddress("rea_btu@mail.ru", $"Басалгина Т.Ю");
-
-                    var mailer = new MailerMessage(fromAdress, toAdress, messageBody, messageSubject);
-
-                    SendMail(mailer);
-                    WriteSheets();
+                    messageBody += taskTemplate;
+                    i++;
                 }
+
+                var displayName = $"{appUser.Tutor?.LastName} {appUser.Tutor?.FirstName} {appUser.Tutor?.ThirdName}";
+                var fromAdress = new MailAddress("rucraccou@gmail.com", "Модуль тестирования");
+                var toAdress = new MailAddress("valera.elikomov2@gmail.com", displayName);
+
+                var mailer = new MailerMessage(fromAdress, toAdress, messageBody, messageSubject);
+
+                SendMail(mailer);
+                WriteSheets();
             }
-            catch (Exception ex) { }
         }
 
         void SendMail(MailerMessage mailer)
         {
-            try
-            {
                 MailMessage message = new(mailer.FromAdress, mailer.ToAdress);
 
                 message.Body = mailer.Body;
@@ -93,19 +106,13 @@ namespace TestingModuleWebApp.Controllers
                 smtpClient.Credentials = new NetworkCredential(mailer.FromAdress.Address, "fioletovo21");
 
                 smtpClient.Send(message);
-            }
-            catch (Exception ex) { _logger.Log(LogLevel.Information, ex.Message) ; }
+            
+           // catch (Exception ex) { _logger.Log(LogLevel.Warning, ex.Message) ; }
         }
 
         void WriteSheets()
         {
 
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> Index()
-        {
-            return View();
         }
 
         [HttpGet]

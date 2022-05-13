@@ -1,13 +1,20 @@
 ﻿@using Microsoft.AspNetCore.Identity
-@using static TestingModuleWebApp.Data.Dictionaries
+@using TestingModuleWebApp.Interfaces
 
 @inject SignInManager<AppUser> SignInManager
 @inject UserManager<AppUser> UserManager
+@inject IAppUserRepository UserRepo
 
 @{
     var currentYear = DateTime.Now.ToString("yyyy");
 
-    var currentUser = await UserManager.GetUserAsync(User);
+    var user = new AppUser();
+
+    if (User.Identity.IsAuthenticated)
+    {
+        //var managerU = await UserManager.GetUserAsync(User);
+        user = await UserRepo.GetByContext(User);
+    }
 }
 
 <!DOCTYPE html>
@@ -46,14 +53,29 @@
                                 </li>
                             }
                         }
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Tutors" asp-action="Index">Преподаватели</a>
+                        </li>
                     </ul>
                     @if (SignInManager.IsSignedIn(User))
                     {
                         <ul class="navbar-nav">
                             <li class="nav-item">
-                                <label>@currentUser.FirstName @GetGroup(currentUser.GroupId)</label>
+                                @if (User.IsInRole("admin"))
+                                {
+                                    <label>
+                                        <a class="nav-link" asp-area="" asp-controller="AdminPanel" asp-action="Index">Admin</a>
+                                    </label>
+                                }
+                                else
+                                {
+                                    <label>
+                                        <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Index">
+                                            @user.FirstName @user.LastName @user.Group?.Title</a>
+                                    </label>
+                                }
                                 <span>&nbsp;|&nbsp;</span>
-                                <a class="btn btn-outline-secondary" asp-controller="Account" asp-action="Logout">Выйти</a>
+                                <a class="btn btn-outline-danger" asp-controller="Account" asp-action="Logout">Выйти</a>
                             </li>
                         </ul>
                     }

@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using TestingModuleWebApp.Data;
+using TestingModuleWebApp.Interfaces;
 using TestingModuleWebApp.Models;
 using TestingModuleWebApp.ViewModels;
 
@@ -8,15 +10,29 @@ namespace TestingModuleWebApp.Controllers
 {
     public class AccountController : Controller
     {
+        private readonly IAppUserRepository _appUserRepository;
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
-        private readonly ApplicationDbContext _context;
 
-        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ApplicationDbContext context)
+        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IAppUserRepository appUserRepository)
         {
-            _context = context;
             _userManager = userManager;
             _signInManager = signInManager;
+            _appUserRepository = appUserRepository;
+        }
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> Index() // личный кабинет
+        {
+            if (User.IsInRole("admin"))
+            {
+                return RedirectToAction("Index", "AdminPanel");
+            }
+
+            var user = await _appUserRepository.GetByContext(User);
+
+            return View(user);
         }
 
         [HttpGet]
@@ -99,10 +115,12 @@ namespace TestingModuleWebApp.Controllers
             return RedirectToAction("Login", "Account");
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> Logout()
         { 
             await _signInManager.SignOutAsync();
+
             return RedirectToAction("Index", "Home");
         }
     }

@@ -145,7 +145,7 @@ namespace TestingModuleWebApp.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("TestingModuleWebApp.Models.AspNetUser", b =>
+            modelBuilder.Entity("TestingModuleWebApp.Models.AppUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("TEXT");
@@ -200,7 +200,6 @@ namespace TestingModuleWebApp.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<int?>("TutorId")
-                        .IsRequired()
                         .HasColumnType("INTEGER");
 
                     b.Property<bool>("TwoFactorEnabled")
@@ -212,6 +211,8 @@ namespace TestingModuleWebApp.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("GroupId");
+
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
 
@@ -222,6 +223,21 @@ namespace TestingModuleWebApp.Migrations
                     b.HasIndex("TutorId");
 
                     b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("TestingModuleWebApp.Models.Group", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Groups");
                 });
 
             modelBuilder.Entity("TestingModuleWebApp.Models.Tutor", b =>
@@ -243,41 +259,11 @@ namespace TestingModuleWebApp.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ThirdName")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
                     b.ToTable("Tutors");
-                });
-
-            modelBuilder.Entity("TestingModuleWebApp.Models.User", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("GroupId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("IsAdmin")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Username")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -291,7 +277,7 @@ namespace TestingModuleWebApp.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("TestingModuleWebApp.Models.AspNetUser", null)
+                    b.HasOne("TestingModuleWebApp.Models.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -300,7 +286,7 @@ namespace TestingModuleWebApp.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("TestingModuleWebApp.Models.AspNetUser", null)
+                    b.HasOne("TestingModuleWebApp.Models.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -315,7 +301,7 @@ namespace TestingModuleWebApp.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TestingModuleWebApp.Models.AspNetUser", null)
+                    b.HasOne("TestingModuleWebApp.Models.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -324,20 +310,24 @@ namespace TestingModuleWebApp.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("TestingModuleWebApp.Models.AspNetUser", null)
+                    b.HasOne("TestingModuleWebApp.Models.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("TestingModuleWebApp.Models.AspNetUser", b =>
+            modelBuilder.Entity("TestingModuleWebApp.Models.AppUser", b =>
                 {
+                    b.HasOne("TestingModuleWebApp.Models.Group", "Group")
+                        .WithMany()
+                        .HasForeignKey("GroupId");
+
                     b.HasOne("TestingModuleWebApp.Models.Tutor", "Tutor")
                         .WithMany()
-                        .HasForeignKey("TutorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("TutorId");
+
+                    b.Navigation("Group");
 
                     b.Navigation("Tutor");
                 });

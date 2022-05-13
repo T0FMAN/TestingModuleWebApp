@@ -1,0 +1,30 @@
+﻿@using TestingModuleWebApp.ViewModels
+@model EditTutorViewModel
+
+@{
+    ViewData["Title"] = "Редактирование преподавателя";
+}
+
+<form method="post" asp-action="Edit" enctype="multipart/form-data">
+    <div class="form-group">
+        <label asp-for="FirstName">Имя</label>
+        <input asp-for="FirstName" class="form-control" placeholder="Имя">
+        <span asp-validation-for="FirstName" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="LastName">Фамилия</label>
+        <input asp-for="LastName" class="form-control" placeholder="Фамилия">
+        <span asp-validation-for="LastName" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="ThirdName">Отчество</label>
+        <input asp-for="ThirdName" class="form-control" placeholder="Отчество">
+        <span asp-validation-for="ThirdName" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Email">Email</label>
+        <input asp-for="Email" class="form-control" placeholder="Email">
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Подтвердить</button>
+</form>
