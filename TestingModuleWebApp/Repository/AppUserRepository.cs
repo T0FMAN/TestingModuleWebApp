@@ -42,6 +42,15 @@ namespace TestingModuleWebApp.Repository
             return saved > 0 ? true : false;
         }
 
+        public async Task<PhysicTask> GetUserPhyTask(ClaimsPrincipal claims)
+        {
+            var user = await GetByContext(claims);
+
+            var task = user.Test;
+
+            return task;
+        }
+
         public async Task<IEnumerable<AppUser>> GetAll()
         {
             return await _context.Users!.ToListAsync();
@@ -49,12 +58,18 @@ namespace TestingModuleWebApp.Repository
 
         public async Task<IEnumerable<AppUser>> GetByGroup(int group)
         {
-            return await _context.Users.Include(i => i.Group).Include(i => i.Tutor).Where(x => x.GroupId == group).ToListAsync();
+            return await _context.Users.Include(i => i.Group)
+                                       .Include(i => i.Tutor)
+                                       .Where(x => x.GroupId == group)
+                                       .ToListAsync();
         }
 
         public async Task<AppUser> GetById(string id)
         {
-            return await _context.Users.Include(i => i.Group).Include(i => i.Tutor).FirstOrDefaultAsync(i => i.Id == id);
+            return await _context.Users.Include(i => i.Group)
+                                       .Include(i => i.Tutor)
+                                       .Include(i => i.Test)
+                                       .FirstOrDefaultAsync(i => i.Id == id);
         }
 
         public async Task<AppUser> GetByContext(ClaimsPrincipal claims)

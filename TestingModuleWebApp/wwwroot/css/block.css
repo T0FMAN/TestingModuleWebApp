@@ -1,5 +1,17 @@
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap");
 
+.container_task {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+	align-content: center;
+	height: auto;
+	width: auto;
+	border-radius: 0px;
+	border: 0px solid #999;
+}
+
 .blocks {
 	overflow: visible;
 	position: absolute;

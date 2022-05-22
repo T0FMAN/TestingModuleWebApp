@@ -1,0 +1,127 @@
+﻿@using TestingModuleWebApp.ViewModels
+@model PhysicTask
+
+@{
+    ViewData["Title"] = "Сквозная задача по физике";
+
+	<script src="https://code.jquery.com/jquery-1.9.1.js"></script>
+
+	<link rel="stylesheet" href="~/css/block.css"/>
+
+	string time = $"t = {Model.t}С";
+	string energy = $"{Model.zE}ДЖ";
+	string radius = $"R = {Model.R}М";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Тест-тренажер по решению сквозной задачи по физике</h1>
+
+	<h2 id="title-task">Тело массой m = @Model.m кг движется по закону</h2>
+    <img src="~/img/physic_task.jpg" />
+</div>
+
+<div class="container_task">
+	<div class="block">
+		<div class="quiz-header" id="header">
+			<h2 class="title">Дано уравнение: @Model.TaskText</h2>
+		</div>
+		
+		<div id="list">
+			<div>
+				<label class="control-label" id="answer-label">Начальная координата (X₀)</label>
+				<input class="form-control" id="user-answer"/>
+			</div>
+			
+			<div>
+				<label class="control-label" id="answer-label">Начальная скорость (U₀)</label>
+				<input class="form-control" id="user-answer"/>
+			</div>
+			
+			<div>
+				<label class="control-label" id="answer-label">Касательное ускорение. Ускорение тела (a)</label>
+				<input class="form-control" id="user-answer"/>
+			</div>
+
+			<div>
+				<label class="control-label" id="answer-label">Начальный импульс тела (p₀)</label>
+				<input class="form-control" id="user-answer"/>
+			</div>
+
+			<div>
+				<label class="control-label" id="answer-label">Начальная кинетическая энергия (Eₖ₀)</label>
+				<input class="form-control" id="user-answer"/>
+			</div>
+
+			<div>
+				<label class="control-label" id="answer-label">Скорость тела через @time (U)</label>
+				<input class="form-control" id="user-answer"/>
+			</div>
+
+			<div>
+				<label class="control-label" id="answer-label">Импульс тела через @time (p)</label>
+				<input class="form-control" id="user-answer"/>
+			</div>
+
+			<div>
+				<label class="control-label" id="answer-label">Изменение импульса тела за @time (∆p).</label>
+				<input class="form-control" id="user-answer"/>
+			</div>
+
+			<div>
+				<label class="control-label" id="answer-label">Импульс силы</label>
+				<input class="form-control" id="user-answer"/>
+			</div>
+
+			<div>
+				<label class="control-label" id="answer-label">Кинетическая энергия @time (Eₖ)</label>
+				<input class="form-control" id="user-answer"/>
+			</div>
+
+			<div>
+				<label class="control-label" id="answer-label">Изменение кинетической энергии за @time (Eₖ)</label>
+				<input class="form-control" id="user-answer"/>
+			</div>
+
+			<div>
+				<label class="control-label" id="answer-label">Равнодействующая сила (F)</label>
+				<input class="form-control" id="user-answer"/>
+			</div>
+
+			<div>
+				<label class="control-label" id="answer-label">Перемещение за @time (S)</label>
+				<input class="form-control" id="user-answer"/>
+			</div>
+
+			<div>
+				<label class="control-label" id="answer-label">Работа равнодействующей силы в течении @time (A)</label>
+				<input class="form-control" id="user-answer"/>
+			</div>
+
+			<div>
+				<label class="control-label" id="answer-label">Мощность механическая (N)</label>
+				<input class="form-control" id="user-answer"/>
+			</div>
+
+			<div>
+				<label class="control-label" id="answer-label">КПД при затраченной энергии @energy (n)</label>
+				<input class="form-control" id="user-answer"/>
+			</div>
+
+			<div>
+				<label class="control-label" id="answer-label">Начальное центростремительное ускорение при движении по окружности @radius (aₙ)</label>
+				<input class="form-control" id="user-answer"/>
+			</div>
+
+			<div>
+				<label class="control-label" id="answer-label">Полное ускорение в начальный момент времени (a)</label>
+				<input class="form-control" id="user-answer"/>
+			</div>
+			
+			<div>
+				<button id="submit">Ответить</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script src="~/js/data-task.js"></script>

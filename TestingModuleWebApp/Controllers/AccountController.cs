@@ -14,7 +14,10 @@ namespace TestingModuleWebApp.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
 
-        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IAppUserRepository appUserRepository)
+        public AccountController(
+            UserManager<AppUser> userManager, 
+            SignInManager<AppUser> signInManager, 
+            IAppUserRepository appUserRepository)
         {
             _userManager = userManager;
             _signInManager = signInManager;

@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TestingModuleWebApp.Models
@@ -14,5 +13,8 @@ namespace TestingModuleWebApp.Models
         [ForeignKey("Tutor")]
         public int? TutorId { get; set; }
         public Tutor? Tutor { get; set; }
+        [ForeignKey("Test")]
+        public int? TestId { get; set; }
+        public PhysicTask? Test { get; set; }
     }
 }
