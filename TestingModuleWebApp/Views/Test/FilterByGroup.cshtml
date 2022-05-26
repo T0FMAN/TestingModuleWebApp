@@ -1,0 +1,25 @@
+﻿@using TestingModuleWebApp.ViewModels
+
+@model Tuple<IEnumerable<GetByGroupPhysicTaskViewModel>, string>
+
+@{
+    ViewData["Title"] = $"Результаты группы {Model.Item2}";
+}
+
+<table class="table mt-5">
+    <thead>
+        <tr>
+            <th scope="col">Имя Фамилия</th>
+            <th scope="col">Попыток</th>
+            <th scope="col">Лучший%</th>
+        </tr>
+    </thead>
+    @foreach (var result in Model.Item1)
+    {
+        <tr>
+            <td>@result.User.FirstName @result.User.LastName</td>
+            <td>@result.Count</td>
+            <td>@result.BestAttempt%</td>
+        </tr>
+    }
+</table>

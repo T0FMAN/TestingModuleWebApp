@@ -14,9 +14,33 @@ namespace TestingModuleWebApp.Repository
             _context = context;
         }
 
-        public async Task<List<string>> GetAllTitlesList()
+        public bool Add(Group group)
         {
-            return await _context.Groups!.Select(x => x.Title).ToListAsync();
+            _context.Add(group);
+            return Save();
+        }
+
+        public bool Delete(Group group)
+        {
+            _context.Remove(group);
+            return Save();
+        }
+
+        public async Task<IEnumerable<Group>> GetAll()
+        {
+            return await _context.Groups!.ToListAsync();
+        }
+
+        public bool Save()
+        {
+            var saved = _context.SaveChanges();
+            return saved > 0 ? true : false;
+        }
+
+        public bool Update(Group group)
+        {
+            _context.Update(group);
+            return Save();
         }
     }
 }

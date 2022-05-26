@@ -7,7 +7,7 @@ using TestingModuleWebApp.ViewModels;
 
 namespace TestingModuleWebApp.Controllers
 {
-    [Authorize(Roles = "admin")]
+    [Authorize(Roles = "admin, tutor")]
     public class UserController : Controller
     {
         private readonly IAppUserRepository _appUserRepository;
@@ -35,7 +35,9 @@ namespace TestingModuleWebApp.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            return View();
+            var createUserViewModel = new CreateUserViewModel();
+
+            return View(createUserViewModel);
         }
         
         [HttpPost]

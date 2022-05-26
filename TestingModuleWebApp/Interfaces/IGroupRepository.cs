@@ -4,6 +4,10 @@ namespace TestingModuleWebApp.Interfaces
 {
     public interface IGroupRepository
     {
-        Task<List<string>> GetAllTitlesList();
+        Task<IEnumerable<Group>> GetAll();
+        bool Add(Group group);
+        bool Update(Group group);
+        bool Delete(Group group);
+        bool Save();
     }
 }

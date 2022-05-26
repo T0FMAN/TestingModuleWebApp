@@ -34,7 +34,7 @@ namespace TestingModuleWebApp.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var groups = await _groupRepository.GetAllTitlesList();
+            var groups = await _groupRepository.GetAll();
 
             ViewBag.Groups = new SelectList(groups);
 

@@ -11,8 +11,8 @@ using TestingModuleWebApp.Data;
 namespace TestingModuleWebApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220520180908_20052")]
-    partial class _20052
+    [Migration("20220525172317_booleanValues")]
+    partial class booleanValues
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -225,7 +225,8 @@ namespace TestingModuleWebApp.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex");
 
-                    b.HasIndex("PhysicTaskId");
+                    b.HasIndex("PhysicTaskId")
+                        .IsUnique();
 
                     b.HasIndex("TutorId");
 
@@ -247,11 +248,17 @@ namespace TestingModuleWebApp.Migrations
                     b.ToTable("Groups");
                 });
 
-            modelBuilder.Entity("TestingModuleWebApp.Models.PhysicTaskDB", b =>
+            modelBuilder.Entity("TestingModuleWebApp.Models.PhysicTask", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("IdPassed")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Percent")
+                        .HasColumnType("TEXT");
 
                     b.Property<double>("R")
                         .HasColumnType("REAL");
@@ -260,8 +267,77 @@ namespace TestingModuleWebApp.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("_A")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("_Ek")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("_Ek0")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("_F")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("_N")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("_S")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("_a0")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("_p0")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("_u")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("_u0")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("_x0")
+                        .HasColumnType("TEXT");
+
                     b.Property<double>("a0")
                         .HasColumnType("REAL");
+
+                    b.Property<bool>("isPass")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool?>("is_A")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool?>("is_Ek")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool?>("is_Ek0")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool?>("is_F")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool?>("is_N")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool?>("is_S")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool?>("is_a0")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool?>("is_p0")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool?>("is_u")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool?>("is_u0")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool?>("is_x0")
+                        .HasColumnType("INTEGER");
 
                     b.Property<double>("m")
                         .HasColumnType("REAL");
@@ -280,7 +356,42 @@ namespace TestingModuleWebApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PhysicTaskDBs");
+                    b.ToTable("PhysicTasks");
+                });
+
+            modelBuilder.Entity("TestingModuleWebApp.Models.Test", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Action")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("AuthorId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Controller")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsPreSetup")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
+
+                    b.ToTable("Tests");
                 });
 
             modelBuilder.Entity("TestingModuleWebApp.Models.Tutor", b =>
@@ -366,9 +477,9 @@ namespace TestingModuleWebApp.Migrations
                         .WithMany()
                         .HasForeignKey("GroupId");
 
-                    b.HasOne("TestingModuleWebApp.Models.PhysicTaskDB", "PhysicTask")
-                        .WithMany()
-                        .HasForeignKey("PhysicTaskId");
+                    b.HasOne("TestingModuleWebApp.Models.PhysicTask", "PhysicTask")
+                        .WithOne("User")
+                        .HasForeignKey("TestingModuleWebApp.Models.AppUser", "PhysicTaskId");
 
                     b.HasOne("TestingModuleWebApp.Models.Tutor", "Tutor")
                         .WithMany()
@@ -379,6 +490,20 @@ namespace TestingModuleWebApp.Migrations
                     b.Navigation("PhysicTask");
 
                     b.Navigation("Tutor");
+                });
+
+            modelBuilder.Entity("TestingModuleWebApp.Models.Test", b =>
+                {
+                    b.HasOne("TestingModuleWebApp.Models.AppUser", "Author")
+                        .WithMany()
+                        .HasForeignKey("AuthorId");
+
+                    b.Navigation("Author");
+                });
+
+            modelBuilder.Entity("TestingModuleWebApp.Models.PhysicTask", b =>
+                {
+                    b.Navigation("User");
                 });
 #pragma warning restore 612, 618
         }

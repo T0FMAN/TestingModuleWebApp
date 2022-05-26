@@ -13,8 +13,8 @@ namespace TestingModuleWebApp.Models
         [ForeignKey("Tutor")]
         public int? TutorId { get; set; }
         public Tutor? Tutor { get; set; }
-        [ForeignKey("Test")]
-        public int? TestId { get; set; }
-        public PhysicTask? Test { get; set; }
+        [ForeignKey("PhysicTask")]
+        public int? PhysicTaskId { get; set; }
+        public PhysicTask? PhysicTask { get; set; }
     }
 }

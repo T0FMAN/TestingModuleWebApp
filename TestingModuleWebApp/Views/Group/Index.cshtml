@@ -1,0 +1,33 @@
+﻿@model IEnumerable<Group>
+
+@{
+    ViewData["Title"] = "Группы";
+}
+
+<a asp-controller="Group" asp-action="Create" type="button" class="btn btn-sm btn-outline-secondary">Добавить</a>
+
+<div class="album py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            @foreach(var group in Model)
+            {
+                <div class="col-md-4">
+                    <div class="card mb-4 box-shadow">
+                        <div class="card-body">
+                            <p class="card-text">ID Группы: @group.Id</p>
+                            <small class="text-muted">Название: @group.Title</small>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <a asp-controller="Group" asp-action="Edit" a
+                                    sp-route-id="@group.Id" type="button" class="btn btn-sm btn-outline-secondary">Просмотр</a>
+                                    <a asp-controller="Group" asp-action="Edit" a
+                                    sp-route-id="@group.Id" type="button" class="btn btn-sm btn-outline-secondary">Редактировать</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

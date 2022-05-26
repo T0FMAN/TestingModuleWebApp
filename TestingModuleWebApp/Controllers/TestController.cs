@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using System.Net;
 using System.Net.Mail;
@@ -13,28 +14,82 @@ namespace TestingModuleWebApp.Controllers
     public class TestController : Controller
     {
         private readonly IGroupRepository _groupRepository;
+        private readonly ITestRepository _testRepository;
         private readonly IAppUserRepository _appUserRepository;
         private readonly IPhysicTaskRepository _physicTaskRepository;
 
-        private readonly UserManager<AppUser> _userManager;
-        private readonly SignInManager<AppUser> _signInManager;
-
-        public TestController(UserManager<AppUser> userManager, 
-                              SignInManager<AppUser> signInManager, 
-                              IGroupRepository groupRepository, 
+        public TestController(IGroupRepository groupRepository, 
                               IAppUserRepository appUserRepository,
-                              IPhysicTaskRepository physicTaskRepository)
+                              IPhysicTaskRepository physicTaskRepository,
+                              ITestRepository testRepository)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
             _groupRepository = groupRepository;
             _appUserRepository = appUserRepository;
             _physicTaskRepository = physicTaskRepository;
+            _testRepository = testRepository;
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            var tests = await _testRepository.GetAll();
+
+            return View(tests);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Browse(int id)
+        {
+            var test = await _testRepository.GetById(id);
+
+            if (test == null)
+                return View("Not Found");
+
+            if (test.IsPreSetup)
+                return RedirectToAction(test.Action);
+
+            return View("Template", test);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Results(string title, string group)
+        {
+            var groups = await _groupRepository.GetAll();
+
+            //ViewBag.Groups = new SelectList(groups);
+
+            if (title is null)
+            {
+                return View("Not Found");
+            }
+
+            var test = await _testRepository.GetByTitle(title);
+
+            if (test.IsPreSetup)
+            {
+                if (group != null)
+                {
+                    var viewModel = await _physicTaskRepository.GetByGroup(group);
+
+                    var tuple = new Tuple<IEnumerable<GetByGroupPhysicTaskViewModel>, string>(viewModel, group);
+
+                    return View("FilterByGroup", tuple);
+                }
+
+                switch (test.Id)
+                {
+                    case 1:
+                        var passedTests = await _physicTaskRepository.GetPassed();
+
+                        var tuple = new Tuple<IEnumerable<PhysicTask>, IEnumerable<Group>>(passedTests.Reverse(), groups);
+
+                        return View("ResultsPhysicTask", tuple);
+
+                    default:
+                        return View("NotFound");
+                }
+            }
+
             return View();
         }
 
@@ -44,7 +99,7 @@ namespace TestingModuleWebApp.Controllers
         {
             var user = await _appUserRepository.GetByContext(User);
 
-            if (user.TestId == null || user.TestId == 0)
+            if (user.PhysicTaskId == null)
             {
                 var taskDB = SetTask();
 
@@ -52,12 +107,12 @@ namespace TestingModuleWebApp.Controllers
 
                 if (taskAdd.Item1)
                 {
-                    user.TestId = taskAdd.Item2;
+                    user.PhysicTaskId = taskAdd.Item2;
 
                     var userAddTask = _appUserRepository.Update(user);
 
                     if (userAddTask)
-                        return View(taskDB);
+                        return View("PhysicTask", taskDB);
                     else
                         return RedirectToAction("Index", "Error");
                 }
@@ -65,7 +120,7 @@ namespace TestingModuleWebApp.Controllers
                     return RedirectToAction("Index", "Error");
             }
             else
-                return View(user.Test);
+                return View("PhysicTask", user.PhysicTask);
         }
 
         static PhysicTask SetTask()
@@ -80,7 +135,7 @@ namespace TestingModuleWebApp.Controllers
                 u0 = u0,
                 a0 = a0,
                 m = GetNumber(false, 1, 15),
-                t = GetNumber(false, 3, 15),
+                t = 2,
                 zE = GetNumber(false, 5, 55),
                 R = GetNumber(false, 2, 15),
 
@@ -123,20 +178,34 @@ namespace TestingModuleWebApp.Controllers
         {
             try
             {
-                var titles = JsonConvert.DeserializeObject<List<string>>(arrTitles)!;
                 var values = JsonConvert.DeserializeObject<List<string>>(arrValues)!;
-
+                var titles = JsonConvert.DeserializeObject<List<string>>(arrTitles)!;
+                
                 var user = await _appUserRepository.GetByContext(User);
 
-                var taskCalc = Calculate(user.Test!, values, titles);
+                var task = user.PhysicTask!;
+
+                var newTask = new PhysicTask
+                {
+                    Id = task.Id,
+                    TaskText = task.TaskText,
+                    m = task.m,
+                    R = task.R,
+                    zE = task.zE,
+                    t = task.t,
+                    x0 = task.x0,
+                    u0 = task.u0,
+                    a0 = task.a0,
+                };
+
+                var taskCalc = Calculate(newTask, values, titles, user.Id);
 
                 if (!User.IsInRole("user"))
                     return Json(taskCalc.Item2);
 
-                PrepareMail(user.Test!.TaskText, taskCalc, user);
+                PrepareMail(user.PhysicTask!.TaskText, taskCalc, user);
 
-                user.TestId = null;
-
+                user.PhysicTaskId = null;
                 _appUserRepository.Update(user);
 
                 return Json(taskCalc.Item2);
@@ -147,7 +216,7 @@ namespace TestingModuleWebApp.Controllers
             }
         }
 
-        static Tuple<List<string>, double> Calculate(PhysicTask task, List<string> values, List<string> titles)
+        Tuple<List<string>, double> Calculate(PhysicTask task, List<string> values, List<string> titles, string userId)
         {
             double m = task.m; // масса тела по условию
             double t = task.t; // время по условию
@@ -158,41 +227,56 @@ namespace TestingModuleWebApp.Controllers
 
             double x0 = task.x0; // начальная координата
             result.Add(x0);
+
             double u0 = task.u0; // начальная скорость 
             result.Add(u0);
+
             double a0 = task.a0; // (a) касательное ускорение
             result.Add(a0);
+
             double p0 = m * u0; // начальный импульс тела
             result.Add(p0);
+
             double Ek0 = m * Math.Pow(u0, 2) / 2; // начальная кинетическая энергия
             result.Add(Ek0);
+
             double u = u0 + a0 * t; // скорость тела через t
             result.Add(u);
+
             double p = m * u; // импульс тела через t
-            result.Add(p);
+            
             double R_p = p - p0; // изменение импульса тела за t
-            result.Add(R_p);
+          
             double Ft = R_p; // импульс силы
-            result.Add(Ft);
+            
             double Ek = m * Math.Pow(u, 2) / 2; // кинетическая энергия за t
             result.Add(Ek);
+
             double R_Ek = Ek - Ek0; // изменение кинетической энергии
-            result.Add(R_Ek);
+            
             double F = m * a0; // равнодействующая сила
             result.Add(F);
+
             double S = u0 * t + a0 * Math.Pow(t, 2) / 2; // перемещение за t
             result.Add(S);
+
             double A = R_Ek; // работа равнодействующей силы в течении t
             result.Add(A);
+
             double N = A / t; // мощность механическая
             result.Add(N);
-            double n = A / zE * 100;  // КПД при затраченной энергии zE
-            result.Add(n);
-            double an = Math.Pow(u0, 2) / R; // начальное центростремительное ускорение при движении по окружности
-            result.Add(an);
-            double a = Math.Round(Math.Sqrt(Math.Pow(an, 2) + Math.Pow(a0, 2)), 2); // полное ускорение в начальный момент времени
-            result.Add(a);
 
+            double n = Math.Round(A / zE * 100, 2);  // КПД при затраченной энергии zE
+            
+            double an = Math.Round(Math.Pow(u0, 2) / R, 2); // начальное центростремительное ускорение при движении по окружности
+            
+            double a = Math.Round(Math.Sqrt(Math.Pow(an, 2) + Math.Pow(a0, 2)), 2); // полное ускорение в начальный момент времени
+            
+            return ResearchBodyMessage(result, titles, values, task, userId);
+        }
+
+        Tuple<List<string>, double> ResearchBodyMessage(List<object> result, List<string> titles, List<string> values, PhysicTask task, string userId)
+        {
             var listResponse = new List<string>();
 
             int i = 0;
@@ -213,19 +297,60 @@ namespace TestingModuleWebApp.Controllers
 
                 string mailString = $"\n\n{title}:\n" +
                                     $"Правильный ответ: {trueAns}\n" +
-                                    $"Ответ пользователя: {userAns} ({isTrue})"; 
+                                    $"Ответ пользователя: {userAns} ({isTrue})";
 
                 listResponse.Add(mailString);
-
                 i++;
             }
 
             double percent = right * 100 / values.Count;
 
+            UpdateTask(task, values, result, userId, percent);
+
             return new Tuple<List<string>, double>(listResponse, percent);
         }
 
-        [Authorize]
+        void UpdateTask(PhysicTask task, List<string> values, List<object> result, string userId, double percent)
+        {
+            task._x0 = values[0];
+            task._u0 = values[1];
+            task._a0 = values[2];
+            task._p0 = values[3];
+            task._Ek0 = values[4];
+            task._u = values[5];
+            task._Ek = values[6];
+            task._F = values[7];
+            task._S = values[8];
+            task._A = values[9];
+            task._N = values[10];
+
+            task.is_x0 = GetPass(values[0], result[0]);
+            task.is_u0 = GetPass(values[1], result[1]);
+            task.is_a0 = GetPass(values[2], result[2]);
+            task.is_p0 = GetPass(values[3], result[3]);
+            task.is_Ek0 = GetPass(values[4], result[4]);
+            task.is_u = GetPass(values[5], result[5]);
+            task.is_Ek = GetPass(values[6], result[6]);
+            task.is_F = GetPass(values[7], result[7]);
+            task.is_S = GetPass(values[8], result[8]);
+            task.is_A = GetPass(values[9], result[9]);
+            task.is_N = GetPass(values[10], result[10]);
+
+            task.isPass = true;
+            task.UserId = userId;
+            task.Percent = percent;
+
+            try { _physicTaskRepository.Update(task); }
+            catch { }
+        }
+
+        static bool GetPass(string value, object result)
+        {
+            if (value == result.ToString())
+                return true;
+            else return false;
+        }
+
         static void PrepareMail(string task, Tuple<List<string>, double> result, AppUser user)
         {
             var name = user.FirstName;
@@ -246,7 +371,7 @@ namespace TestingModuleWebApp.Controllers
 
             var displayName = $"{user.Tutor?.LastName} {user.Tutor?.FirstName} {user.Tutor?.ThirdName}";
             var fromAdress = new MailAddress("rucraccou@gmail.com", "Модуль тестирования");
-            var toAdress = new MailAddress("valera.elikomov2@gmail.com", displayName);
+            var toAdress = new MailAddress(user.Tutor!.Email, displayName);
 
             var mailer = new MailerMessage(fromAdress, toAdress, message, messageSubject);
 

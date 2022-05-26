@@ -46,7 +46,7 @@ namespace TestingModuleWebApp.Repository
         {
             var user = await GetByContext(claims);
 
-            var task = user.Test;
+            var task = user.PhysicTask;
 
             return task;
         }
@@ -60,7 +60,15 @@ namespace TestingModuleWebApp.Repository
         {
             return await _context.Users.Include(i => i.Group)
                                        .Include(i => i.Tutor)
-                                       .Where(x => x.GroupId == group)
+                                       .Where(i => i.GroupId == group)
+                                       .ToListAsync();
+        }
+
+        public async Task<IEnumerable<AppUser>> GetByGroup(string group)
+        {
+            return await _context.Users.Include(i => i.Group)
+                                       .Include(i => i.Tutor)
+                                       .Where(i => i.Group.Title == group)
                                        .ToListAsync();
         }
 
@@ -68,7 +76,7 @@ namespace TestingModuleWebApp.Repository
         {
             return await _context.Users.Include(i => i.Group)
                                        .Include(i => i.Tutor)
-                                       .Include(i => i.Test)
+                                       .Include(i => i.PhysicTask)
                                        .FirstOrDefaultAsync(i => i.Id == id);
         }
 

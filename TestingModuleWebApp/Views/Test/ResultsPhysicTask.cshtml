@@ -1,0 +1,154 @@
+﻿@model Tuple<IEnumerable<PhysicTask>, IEnumerable<Group>>
+
+@{
+    ViewData["Title"] = "Результаты сквозной задачи по физике";
+
+    <link rel="stylesheet" href="~/css/sheets.css"/>
+}
+
+@*<form asp-action="Results">
+    <div class="col">
+    <select asp-items="@ViewBag.Groups">
+        <option>Выберите фильтр группы</option>
+    </select>
+    <span class="text-danger"></span>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</div>
+</form>*@
+
+@foreach(var btn in Model.Item2)
+{
+    <a class="btn btn-outline-secondary" asp-controller="Test" asp-action="Results" 
+    asp-route-title="Сквозная задача по физике" 
+    asp-route-group=@btn.Title>
+    @btn.Title</a>
+}
+
+<table>
+    <thead>
+        <tr>
+            <th>Кто прошел:</th>
+            <th>Задача:</th>
+            <th>X₀</th>
+            <th>U₀</th>
+            <th>a</th>
+            <th>p₀</th>
+            <th>Eₖ₀</th>
+            <th>U</th>
+            <th>Eₖ</th>
+            <th>F</th>
+            <th>S</th>
+            <th>A</th>
+            <th>N</th>
+            <th>Процент</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var task in Model.Item1)
+    {
+        <tr>
+            <td class="defaultTd">@task.User.FirstName @task.User.LastName</td>
+            <td class="defaultTd">@task.TaskText</td>
+                @if (task.is_x0)
+                {
+                    <td class="trueTd">@task._x0</td>
+                }
+                else
+                {
+                    <td class="falseTd">@task._x0</td>
+                }
+
+                @if (task.is_u0)
+                {
+                    <td class="trueTd">@task._u0</td>
+                }
+                else
+                {
+                    <td class="falseTd">@task._u0</td>
+                }
+
+                @if (task.is_a0)
+                {
+                    <td class="trueTd">@task._a0</td>
+                }
+                else
+                {
+                    <td class="falseTd">@task._a0</td>
+                }
+
+                @if (task.is_p0)
+                {
+                    <td class="trueTd">@task._p0</td>
+                }
+                else
+                {
+                    <td class="falseTd">@task._p0</td>
+                }
+
+                @if (task.is_Ek0)
+                {
+                    <td class="trueTd">@task._Ek0</td>
+                }
+                else
+                {
+                    <td class="falseTd">@task._Ek0</td>
+                }
+
+                @if (task.is_u)
+                {
+                    <td class="trueTd">@task._u</td>
+                }
+                else
+                {
+                    <td class="falseTd">@task._u</td>
+                }
+
+                @if (task.is_Ek)
+                {
+                    <td class="trueTd">@task._Ek</td>
+                }
+                else
+                {
+                    <td class="falseTd">@task._Ek</td>
+                }
+
+                @if (task.is_F)
+                {
+                    <td class="trueTd">@task._F</td>
+                }
+                else
+                {
+                    <td class="falseTd">@task._F</td>
+                }
+
+                @if (task.is_S)
+                {
+                    <td class="trueTd">@task._S</td>
+                }
+                else
+                {
+                    <td class="falseTd">@task._S</td>
+                }
+
+                @if (task.is_A)
+                {
+                    <td class="trueTd">@task._A</td>
+                }
+                else
+                {
+                    <td class="falseTd">@task._A</td>
+                }
+
+                @if (task.is_N)
+                {
+                    <td class="trueTd">@task._N</td>
+                }
+                else
+                {
+                    <td class="falseTd">@task._N</td>
+                }
+             <td class="defaultTd">@task.Percent%</td>
+        </tr>
+    }
+    </tbody>
+</table>

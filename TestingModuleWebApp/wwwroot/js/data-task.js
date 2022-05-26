@@ -15,17 +15,16 @@ async function checkAnswer() {
 		var value = n.value.toString();
 
 		if (value !== '') {
-			var isValid = validate(value);
+			var isValid = validate(value, arrLabels[i]);
 
 			if (!isValid) {
 				validModel = false;
-				arrLabels[i].innerHTML += 'Неверно';
 			}
 			values[i] = value;
 		}
 		else {
 			validModel = false;
-			arrLabels[i].innerHTML += 'Пустое значение';
+			arrLabels[i].innerHTML += ' Пустое значение';
 		}
 		i++;
 	});
@@ -54,7 +53,6 @@ async function checkAnswer() {
 	var load = true;
 
 	while (load) {
-
 		await $.post("/Test/GetResponse", { arrValues: arrValues, arrTitles: arrTitles })
 			.done(function (data) {
 				var result_str = `Правильно ${data}%`;
@@ -68,7 +66,7 @@ async function checkAnswer() {
 	}
 }
 
-function validate(value) {
+function validate(value, node) {
 	var arr = value.toString().split('');
 
 	var isValid = arr.every(n =>
@@ -76,6 +74,12 @@ function validate(value) {
 		|| n.toString() === '.'
 		|| n.toString() === ','
 		|| n.toString() === '-');
+
+	if (!isValid || !Number.isInteger(parseInt(arr[0]))) {
+		var text = node.innerText;
+
+		node.innerText += 'Неверный синтаксис'
+    }
 
 	return isValid;
 }

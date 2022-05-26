@@ -9,6 +9,7 @@ namespace TestingModuleWebApp.Interfaces
         Task<AppUser> GetByContext(ClaimsPrincipal claims);
         Task<AppUser> GetById(string id);
         Task<IEnumerable<AppUser>> GetByGroup(int group);
+        Task<IEnumerable<AppUser>> GetByGroup(string group);
         Task<PhysicTask> GetUserPhyTask(ClaimsPrincipal claims);
         bool Add(AppUser user);
         bool Update(AppUser user);

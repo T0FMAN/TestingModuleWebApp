@@ -1,9 +1,9 @@
 ﻿@using TestingModuleWebApp.ViewModels
 
-@model CreateUserViewModel
+@model CreateGroupViewModel
 
 @{
-    ViewData["Title"] = "Добавление пользователя";
+    ViewData["Title"] = "Создание группы";
 }
 
 <div class="navbar-container">
@@ -23,25 +23,13 @@
                    @*<input type="hidden" id="AppUserId" name="AppUserId" asp-for="Id" />*@
                     <div class="form-row form-group">
                       <div class="col">                       
-                        <input asp-for="FirstName" class="form-control form-control-lg" placeholder="Имя"/>
-                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                        <input asp-for="Title" class="form-control form-control-lg" placeholder="Наименование группы"/>
+                        <span asp-validation-for="Title" class="text-danger"></span>
                       </div>
                     </div>
                     <div class="form-row form-group">
-                      <div class="col">                        
-                        <input asp-for="LastName" class="form-control form-control-lg" placeholder="Фамилия"/>
-                        <span asp-validation-for="LastName" class="text-danger"></span>
-                      </div>
-                    </div> 
-                    <div class="form-row form-group">
-                      <div class="col">                        
-                        <input asp-for="Group" class="form-control form-control-lg" placeholder="Группа"/>
-                        <span asp-validation-for="Group" class="text-danger"></span>
-                      </div>
-                    </div> 
-                    <div class="form-row form-group">
                       <div class="col">
-                        <button class="btn btn-block btn-success btn-lg" type="submit">Create Account</button>
+                        <button class="btn btn-block btn-success btn-lg" type="submit">Создать группу</button>
                       </div>
                     </div>
                   </form>

@@ -12,6 +12,7 @@ namespace TestingModuleWebApp.Data
         }
         public DbSet<Group> Groups { get; set; }
         public DbSet<Tutor> Tutors { get; set; }
-        public DbSet<PhysicTask> Tests { get; set; }
+        public DbSet<PhysicTask> PhysicTasks { get; set; }
+        public DbSet<Test> Tests { get; set; }
     }
 }
