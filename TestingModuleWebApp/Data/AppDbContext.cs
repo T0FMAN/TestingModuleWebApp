@@ -4,9 +4,9 @@ using TestingModuleWebApp.Models;
 
 namespace TestingModuleWebApp.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<AppUser>
+    public class AppDbContext : IdentityDbContext<AppUser>
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
 
         }

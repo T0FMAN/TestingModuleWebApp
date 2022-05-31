@@ -9,10 +9,10 @@ namespace TestingModuleWebApp.Repository
 {
     public class AppUserRepository : IAppUserRepository
     {
-        private readonly ApplicationDbContext _context;
+        private readonly AppDbContext _context;
         private readonly UserManager<AppUser> _userManager;
 
-        public AppUserRepository(ApplicationDbContext context, UserManager<AppUser> userManager)
+        public AppUserRepository(AppDbContext context, UserManager<AppUser> userManager)
         {
             _context = context;
             _userManager = userManager;

@@ -7,9 +7,9 @@ namespace TestingModuleWebApp.Repository
 {
     public class TutorRepository : ITutorRepository
     {
-        private readonly ApplicationDbContext _context;
+        private readonly AppDbContext _context;
 
-        public TutorRepository(ApplicationDbContext context)
+        public TutorRepository(AppDbContext context)
         {
             _context = context;
         }

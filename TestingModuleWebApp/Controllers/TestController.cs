@@ -374,7 +374,7 @@ namespace TestingModuleWebApp.Controllers
             var toAdress = new MailAddress(user.Tutor!.Email, displayName);
 
             var mailer = new MailerMessage(fromAdress, toAdress, message, messageSubject);
-
+            
             SendMail(mailer);
         }
 

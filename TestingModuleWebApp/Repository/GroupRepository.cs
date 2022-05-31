@@ -7,9 +7,9 @@ namespace TestingModuleWebApp.Repository
 {
     public class GroupRepository : IGroupRepository
     {
-        private readonly ApplicationDbContext _context;
+        private readonly AppDbContext _context;
 
-        public  GroupRepository(ApplicationDbContext context)
+        public  GroupRepository(AppDbContext context)
         {
             _context = context;
         }
@@ -28,13 +28,13 @@ namespace TestingModuleWebApp.Repository
 
         public async Task<IEnumerable<Group>> GetAll()
         {
-            return await _context.Groups!.ToListAsync();
+            return await _context.Groups!.AsNoTracking().ToListAsync();
         }
 
         public bool Save()
         {
             var saved = _context.SaveChanges();
-            return saved > 0 ? true : false;
+            return saved > 0;
         }
 
         public bool Update(Group group)

@@ -10,7 +10,7 @@ using TestingModuleWebApp.Data;
 
 namespace TestingModuleWebApp.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
+    [DbContext(typeof(AppDbContext))]
     [Migration("20220525172317_booleanValues")]
     partial class booleanValues
     {

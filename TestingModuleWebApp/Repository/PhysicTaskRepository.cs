@@ -8,10 +8,10 @@ namespace TestingModuleWebApp.Repository
 {
     public class PhysicTaskRepository : IPhysicTaskRepository
     {
-        private readonly ApplicationDbContext _context;
+        private readonly AppDbContext _context;
         private readonly IAppUserRepository _appUserRepository;
 
-        public PhysicTaskRepository(ApplicationDbContext context, IAppUserRepository appUserRepository)
+        public PhysicTaskRepository(AppDbContext context, IAppUserRepository appUserRepository)
         {
             _context = context;
             _appUserRepository = appUserRepository;
@@ -19,14 +19,16 @@ namespace TestingModuleWebApp.Repository
 
         public async Task<IEnumerable<PhysicTask>> GetPassed()
         {
-            return await _context.PhysicTasks.Include(n => n.User)
+            return await _context.PhysicTasks.AsNoTracking()
+                                             .Include(n => n.User)
                                              .Where(n => n.isPass == true)
                                              .ToListAsync();
         }
 
         public async Task<IEnumerable<PhysicTask>> TestsGetByGroup(string group)
         {
-            return await _context.PhysicTasks.Include(n => n.User)
+            return await _context.PhysicTasks.AsNoTracking()
+                                             .Include(n => n.User)
                                              .Where(n => n.User.Group.Title == group && n.isPass == true)
                                              .ToListAsync();
         }

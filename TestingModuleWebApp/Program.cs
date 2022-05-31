@@ -15,12 +15,12 @@ builder.Services.AddScoped<IAppUserRepository, AppUserRepository>();
 builder.Services.AddScoped<IGroupRepository, GroupRepository>();
 builder.Services.AddScoped<IPhysicTaskRepository, PhysicTaskRepository>();
 builder.Services.AddScoped<ITestRepository, TestRepository>();
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
+builder.Services.AddDbContext<AppDbContext>(options =>
 {
     //options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServerConnection"));
     options.UseSqlite(builder.Configuration.GetConnectionString("SqliteConnection"));
 });
-builder.Services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<AppDbContext>();
 builder.Services.AddMemoryCache();
 builder.Services.AddSession();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
