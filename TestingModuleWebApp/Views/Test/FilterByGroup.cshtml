@@ -1,9 +1,9 @@
 ﻿@using TestingModuleWebApp.ViewModels
 
-@model Tuple<IEnumerable<GetByGroupPhysicTaskViewModel>, string>
+@model IEnumerable<GetByGroupPhysicTaskVM>
 
 @{
-    ViewData["Title"] = $"Результаты группы {Model.Item2}";
+    ViewData["Title"] = $"Результаты группы {ViewData["Group"]}";
 }
 
 <table class="table mt-5">
@@ -14,10 +14,10 @@
             <th scope="col">Лучший%</th>
         </tr>
     </thead>
-    @foreach (var result in Model.Item1)
+    @foreach (var result in Model)
     {
         <tr>
-            <td>@result.User.FirstName @result.User.LastName</td>
+            <td>@result.Name @result.LastName</td>
             <td>@result.Count</td>
             <td>@result.BestAttempt%</td>
         </tr>

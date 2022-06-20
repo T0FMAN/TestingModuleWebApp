@@ -72,7 +72,7 @@ namespace TestingModuleWebApp.Controllers
             TempData["Error"] = "Пользователь не найден";
             return View(loginViewModel);
         }
-
+        /*
         [HttpGet]
         public IActionResult Register()
         {
@@ -117,7 +117,7 @@ namespace TestingModuleWebApp.Controllers
 
             return RedirectToAction("Login", "Account");
         }
-
+        */
         [Authorize]
         [HttpGet]
         public async Task<IActionResult> Logout()

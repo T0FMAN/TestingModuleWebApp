@@ -32,11 +32,9 @@ namespace TestingModuleWebApp.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var groups = await _groupRepository.GetAll();
-
-            ViewBag.Groups = new SelectList(groups);
+            var a = HttpContext.Connection.RemoteIpAddress;
 
             return View();
         }

@@ -6,16 +6,6 @@
     <link rel="stylesheet" href="~/css/sheets.css"/>
 }
 
-@*<form asp-action="Results">
-    <div class="col">
-    <select asp-items="@ViewBag.Groups">
-        <option>Выберите фильтр группы</option>
-    </select>
-    <span class="text-danger"></span>
-    <button type="submit" class="btn btn-primary">Submit</button>
-</div>
-</form>*@
-
 @foreach(var btn in Model.Item2)
 {
     <a class="btn btn-outline-secondary" asp-controller="Test" asp-action="Results" 
@@ -27,8 +17,9 @@
 <table>
     <thead>
         <tr>
-            <th>Кто прошел:</th>
-            <th>Задача:</th>
+            <th>Кто прошел</th>
+            <th>Дата</th>
+            <th>Задача</th>
             <th>X₀</th>
             <th>U₀</th>
             <th>a</th>
@@ -41,14 +32,16 @@
             <th>A</th>
             <th>N</th>
             <th>Процент</th>
+            <th>Удалить?</th>
         </tr>
     </thead>
     <tbody>
     @foreach (var task in Model.Item1)
     {
         <tr>
-            <td class="defaultTd">@task.User.FirstName @task.User.LastName</td>
-            <td class="defaultTd">@task.TaskText</td>
+            <td width="350" class="defaultTd">@task.Name @task.LastName (@task.Group.Title)</td>
+            <td width="250" class="defaultTd">@task.DateTime</td>
+            <td width="200" class="defaultTd">@task.TaskText</td>
                 @if (task.is_x0)
                 {
                     <td class="trueTd">@task._x0</td>
@@ -148,6 +141,7 @@
                     <td class="falseTd">@task._N</td>
                 }
              <td class="defaultTd">@task.Percent%</td>
+             <td><a class="btn btn-outline-secondary" asp-controller="Test" asp-action="DeleteResult" asp-route-id="@task.Id">Удалить</a></td>
         </tr>
     }
     </tbody>

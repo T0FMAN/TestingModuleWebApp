@@ -17,9 +17,17 @@ namespace TestingModuleWebApp.Repository
             _appUserRepository = appUserRepository;
         }
 
+        public async Task<IEnumerable<PhysicTask>> GetAll()
+        {
+            return await _context.PhyTasks.AsNoTracking()
+                                          .Include(n => n.Group)
+                                          .OrderByDescending(n => n.DateTime)
+                                          .ToListAsync();
+        }
+
         public async Task<IEnumerable<PhysicTask>> GetPassed()
         {
-            return await _context.PhysicTasks.AsNoTracking()
+            return await _context.PhyTasks.AsNoTracking()
                                              .Include(n => n.User)
                                              .Where(n => n.isPass == true)
                                              .ToListAsync();
@@ -27,39 +35,43 @@ namespace TestingModuleWebApp.Repository
 
         public async Task<IEnumerable<PhysicTask>> TestsGetByGroup(string group)
         {
-            return await _context.PhysicTasks.AsNoTracking()
-                                             .Include(n => n.User)
-                                             .Where(n => n.User.Group.Title == group && n.isPass == true)
+            return await _context.PhyTasks.AsNoTracking()
+                                             .Include(n => n.Group)
+                                             .Where(n => n.Group.Title == group)
+                                             .OrderByDescending(n => n.DateTime)
                                              .ToListAsync();
         }
 
-        public async Task<IEnumerable<GetByGroupPhysicTaskViewModel>> GetByGroup(string group)
+        public async Task<IEnumerable<GetByGroupPhysicTaskVM>> GetByGroup(string group)
         {
-            var viewModelList = new List<GetByGroupPhysicTaskViewModel>();
+            var viewModelList = new List<GetByGroupPhysicTaskVM>();
 
             var tasks = await TestsGetByGroup(group);
 
-            var users = await _appUserRepository.GetByGroup(group);
 
-            foreach (var user in users)
+
+            foreach (var task in tasks)
             {
-                var userTasks = tasks.Where(n => n.UserId == user.Id);
-
-                var count = userTasks.Count();
-                var best = BestAttempt(count, userTasks);
-
-                var byGroupVM = new GetByGroupPhysicTaskViewModel
-                {
-                    User = user,
-                    Count = count,
-                    BestAttempt = best,
-                };
-                viewModelList.Add(byGroupVM);
+                
             }
-            //var sortByName = from i in viewModelList
-            //                 orderby i
-            //                 select i;
 
+            //var users = await _appUserRepository.GetByGroup(group);
+
+            //foreach (var user in users)
+            //{
+            //    var userTasks = tasks.Where(n => n.UserId == user.Id);
+
+            //    var count = userTasks.Count();
+            //    var best = BestAttempt(count, userTasks);
+
+            //    var byGroupVM = new GetByGroupPhysicTaskViewModel
+            //    {
+            //        User = user,
+            //        Count = count,
+            //        BestAttempt = best,
+            //    };
+            //    viewModelList.Add(byGroupVM);
+            //}
             return viewModelList;
         }
 
@@ -71,14 +83,10 @@ namespace TestingModuleWebApp.Repository
                 return tasks.Max(n => n.Percent);
         }
 
-        public Tuple<bool, int> Add(PhysicTask physicTask)
+        public bool Add(PhysicTask physicTask)
         {
             _context.Add(physicTask);
-            var save = Save();
-
-            int id = physicTask.Id;
-
-            return new Tuple<bool, int>(save, id);
+            return Save();
         }
 
         public bool Delete(PhysicTask physicTask)

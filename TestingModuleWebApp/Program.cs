@@ -17,7 +17,6 @@ builder.Services.AddScoped<IPhysicTaskRepository, PhysicTaskRepository>();
 builder.Services.AddScoped<ITestRepository, TestRepository>();
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
-    //options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServerConnection"));
     options.UseSqlite(builder.Configuration.GetConnectionString("SqliteConnection"));
 });
 builder.Services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<AppDbContext>();

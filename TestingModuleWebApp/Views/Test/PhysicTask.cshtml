@@ -1,5 +1,8 @@
 ﻿@using Microsoft.AspNetCore.Identity
+@using System.Web
 @using TestingModuleWebApp.ViewModels
+@using Newtonsoft.Json
+
 @model PhysicTask
 
 @inject SignInManager<AppUser> SignInManager
@@ -12,16 +15,36 @@
 	<link rel="stylesheet" href="~/css/block.css"/>
 	<link rel="stylesheet" href="~/css/input-form-phy.css"/>
 
-	string time = $"t = {Model.t}С";
-	string energy = $"{Model.zE}ДЖ";
-	string radius = $"R = {Model.R}М";
+	var time = $"t = {Model.t}С";
+	var energy = $"{Model.zE}ДЖ";
+	var radius = $"R = {Model.R}М";
+
+	var modelToJS = JsonConvert.SerializeObject(Model);
 }
+
+<style>
+	.inputcustom input ~ label:after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 10.5px;
+  margin-top: -5px;
+  display: inline-block;
+  font-size: 11px;
+  line-height: 1;
+  width: 10px;
+  height: 10px;
+  background-color: #117efd;
+  border-radius: 50px;
+}
+</style>
 
 <div class="text-center">
     <h1 class="display-4">Тест-тренажер по решению сквозной задачи по физике</h1>
 
 	<h2 id="title-task">Тело массой m = @Model.m кг движется по закону</h2>
-    <img src="~/img/physic_task.jpg" />
+
+    <img id="image-task" src="~/img/physic_task.jpg" />
 </div>
 
 <div class="container_task">
@@ -31,34 +54,34 @@
 		</div>
 		
 		<div id="list">
-			<div>
-				<label class="control-label" id="answer-label">Начальная координата (X₀)</label>
-				<input class="form-inputs" id="user-answer" placeholder=""/>
+			<div class="inputcustom">
+				<label class="control-label" id="answer-label">Начальная координата (X₀), м</label>
+				<input maxlength="10" class="form-inputs" id="x0" placeholder="0,00"/>
 			</div>
 			
 			<div>
-				<label class="control-label" id="answer-label">Начальная скорость (U₀)</label>
-				<input class="form-inputs" id="user-answer" placeholder=""/>
+				<label class="control-label" id="answer-label">Начальная скорость (U₀), м/с</label>
+				<input maxlength="10" class="form-inputs" id="u0" placeholder="0,00"/>
 			</div>
 			
 			<div>
-				<label class="control-label" id="answer-label">Касательное ускорение. Ускорение тела (a)</label>
-				<input class="form-inputs" id="user-answer" placeholder=""/>
+				<label class="control-label" id="answer-label">Касательное ускорение. Ускорение тела (a), м/с²</label>
+				<input maxlength="10" class="form-inputs" id="a0" placeholder="0,00"/>
 			</div>
 
 			<div>
-				<label class="control-label" id="answer-label">Начальный импульс тела (p₀)</label>
-				<input class="form-inputs" id="user-answer" placeholder=""/>
+				<label class="control-label" id="answer-label">Начальный импульс тела (p₀), кг м/с</label>
+				<input maxlength="10" class="form-inputs" id="p0" placeholder="0,00"/>
 			</div>
 
 			<div>
-				<label class="control-label" id="answer-label">Начальная кинетическая энергия (Eₖ₀)</label>
-				<input class="form-inputs" id="user-answer" placeholder=""/>
+				<label class="control-label" id="answer-label">Начальная кинетическая энергия (Eₖ₀), Дж</label>
+				<input maxlength="10" class="form-inputs" id="Ek0" placeholder="0,00"/>
 			</div>
 
 			<div>
-				<label class="control-label" id="answer-label">Скорость тела через @time (U)</label>
-				<input class="form-inputs" id="user-answer" placeholder=""/>
+				<label class="control-label" id="answer-label">Скорость тела через @time (U), м/с</label>
+				<input maxlength="10" class="form-inputs" id="u" placeholder="0,00"/>
 			</div>
 
 			@*<div>
@@ -77,8 +100,8 @@
 			</div>*@
 
 			<div>
-				<label class="control-label" id="answer-label">Кинетическая энергия @time (Eₖ)</label>
-				<input class="form-inputs" id="user-answer" placeholder=""/>
+				<label class="control-label" id="answer-label">Кинетическая энергия @time (Eₖ), Дж</label>
+				<input maxlength="10" class="form-inputs" id="Ek" placeholder="0,00"/>
 			</div>
 
 			@*<div>
@@ -87,23 +110,23 @@
 			</div>*@
 
 			<div>
-				<label class="control-label" id="answer-label">Равнодействующая сила (F)</label>
-				<input class="form-inputs" id="user-answer" placeholder=""/>
+				<label class="control-label" id="answer-label">Равнодействующая сила (F), Н</label>
+				<input maxlength="10" class="form-inputs" id="F" placeholder="0,00"/>
 			</div>
 
 			<div>
-				<label class="control-label" id="answer-label">Перемещение за @time (S)</label>
-				<input class="form-inputs" id="user-answer" placeholder=""/>
+				<label class="control-label" id="answer-label">Перемещение за @time (S), м</label>
+				<input maxlength="10" class="form-inputs" id="S" placeholder="0,00"/>
 			</div>
 
 			<div>
-				<label class="control-label" id="answer-label">Работа равнодействующей силы в течении @time (A)</label>
-				<input class="form-inputs" id="user-answer" placeholder=""/>
+				<label class="control-label" id="answer-label">Работа равнодействующей силы в течении @time (A), Дж</label>
+				<input maxlength="10" class="form-inputs" id="A" placeholder="0,00"/>
 			</div>
 
 			<div>
-				<label class="control-label" id="answer-label">Мощность механическая (N)</label>
-				<input class="form-inputs" id="user-answer" placeholder=""/>
+				<label class="control-label" id="answer-label">Мощность механическая (N), Вт</label>
+				<input maxlength="10" class="form-inputs" id="N" placeholder="0,00"/>
 			</div>
 
 			@*<div>
@@ -130,7 +153,15 @@
 
 <script src="~/js/data-task.js"></script>
 
-@if (SignInManager.IsSignedIn(User) && !User.IsInRole("user"))
+<script>
+	$(document).ready(function() {
+		var thing = "@Html.Raw(HttpUtility.JavaScriptStringEncode(modelToJS))";
+		
+		setTask(thing);
+	});
+</script>
+
+@if (SignInManager.IsSignedIn(User))
 {
 	<a class="btn btn-outline-secondary" asp-controller="Test" asp-action="Results" asp-route-title="Сквозная задача по физике">Результаты</a>
 }

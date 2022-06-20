@@ -7,16 +7,13 @@
 }
 
 <div class="block">
-    <div>
-        <div class="wrapper">
-            @foreach(var test in Model)
-            {
-                <section class="models">
-                    <h4>
-                        <a class="nav-link" asp-controller="Test" asp-action="Browse" asp-route-id=@test.Id>@test.Description</a>
-                    </h4>
-                </section>
-            }
-        </div>
-    </div>
+    @foreach(var test in Model)
+    {
+        <section class="models">
+            <h4>
+                <a class="nav-link" asp-controller="Test" asp-action="Browse" asp-route-id=@test.Id>@test.Description</a>
+            </h4>
+            <a class="btn btn-outline-secondary" asp-controller="Test" asp-action="Results" asp-route-title="Сквозная задача по физике">Результаты</a>
+        </section>
+    }
 </div>

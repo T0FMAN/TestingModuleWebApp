@@ -6,6 +6,7 @@ using TestingModuleWebApp.ViewModels;
 
 namespace TestingModuleWebApp.Controllers
 {
+    [Authorize]
     public class TutorController : Controller
     {
         private readonly ILogger<TutorController> _logger;

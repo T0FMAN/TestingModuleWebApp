@@ -14,6 +14,21 @@ namespace TestingModuleWebApp.Repository
             _context = context;
         }
 
+        public async Task<Group> GetById(int id)
+        {
+            return await _context.Groups.FirstOrDefaultAsync(n => n.Id == id);
+        }
+
+        public async Task<int> GetIdByTitle(string title)
+        {
+            var group = await _context.Groups.FirstOrDefaultAsync(n => n.Title == title);
+
+            if (group == null)
+                return 0;
+
+            return group.Id;
+        }
+
         public bool Add(Group group)
         {
             _context.Add(group);
@@ -26,9 +41,11 @@ namespace TestingModuleWebApp.Repository
             return Save();
         }
 
-        public async Task<IEnumerable<Group>> GetAll()
+        public async Task<IEnumerable<Group>> GetAllWithOrOutArchive(bool isArchive)
         {
-            return await _context.Groups!.AsNoTracking().ToListAsync();
+            return await _context.Groups!.AsNoTracking()
+                                         .Where(n => n.IsArchive == isArchive)
+                                         .ToListAsync();
         }
 
         public bool Save()

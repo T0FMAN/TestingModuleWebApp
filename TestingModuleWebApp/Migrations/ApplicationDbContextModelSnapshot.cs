@@ -9,7 +9,7 @@ using TestingModuleWebApp.Data;
 
 namespace TestingModuleWebApp.Migrations
 {
-    [DbContext(typeof(AppDbContext))]
+    [DbContext(typeof(Data.AppDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

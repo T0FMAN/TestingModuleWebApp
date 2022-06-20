@@ -5,9 +5,11 @@ namespace TestingModuleWebApp.Interfaces
 {
     public interface IPhysicTaskRepository
     {
-        Tuple<bool, int> Add(PhysicTask physicTask);
+        Task<IEnumerable<PhysicTask>> GetAll();
         Task<IEnumerable<PhysicTask>> GetPassed();
-        Task<IEnumerable<GetByGroupPhysicTaskViewModel>> GetByGroup(string group);
+        Task<IEnumerable<PhysicTask>> TestsGetByGroup(string group);
+        Task<IEnumerable<GetByGroupPhysicTaskVM>> GetByGroup(string group);
+        bool Add(PhysicTask physicTask);
         bool Update(PhysicTask physicTask);
         bool Delete(PhysicTask physicTask);
         bool Save();

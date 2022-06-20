@@ -18,12 +18,14 @@ th {
 }
 
 .trueTd {
+    width: 60px;
     border: 1px solid #dddddd;
     padding: 5px;
     background-color: forestgreen;
 }
 
 .falseTd {
+    width: 60px;
     border: 1px solid #dddddd;
     padding: 5px;
     background-color: orangered;

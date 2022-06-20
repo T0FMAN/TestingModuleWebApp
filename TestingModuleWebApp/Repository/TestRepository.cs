@@ -9,7 +9,7 @@ namespace TestingModuleWebApp.Repository
     {
         private readonly AppDbContext _context;
 
-        public TestRepository(AppDbContext context)
+        public TestRepository(Data.AppDbContext context)
         {
             _context = context;
         }

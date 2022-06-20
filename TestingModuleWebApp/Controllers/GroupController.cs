@@ -20,7 +20,7 @@ namespace TestingModuleWebApp.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var groups = await _groupRepository.GetAll();
+            var groups = await _groupRepository.GetAllWithOrOutArchive(false);
 
             return View(groups);
         }
@@ -42,6 +42,59 @@ namespace TestingModuleWebApp.Controllers
             _groupRepository.Add(new Group { Title = VM.Title });
 
             return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var group = await _groupRepository.GetById(id);
+
+            if (group == null)
+                return View("Error");
+
+            var VM = new EditGroupViewModel
+            {
+                Id = group.Id,
+                Title = group.Title,
+            };
+
+            return View(VM);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(EditGroupViewModel VM)
+        {
+            if (!ModelState.IsValid)
+                return View(VM);
+
+            _groupRepository.Update(new Group { Id = VM.Id, Title = VM.Title });
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Archiving(int id, int act)
+        {
+            bool action = act == 1;
+
+            var group = await _groupRepository.GetById(id);
+
+            if (group == null)
+                return View("Error", new ErrorViewModel { Error = $"В базе данных отсутсвует объект с данным ID '{id}'" });
+
+            group.IsArchive = action;
+
+            _groupRepository.Update(group);
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Archive()
+        {
+            var groups = await _groupRepository.GetAllWithOrOutArchive(true);
+
+            return View(groups);
         }
     }
 }

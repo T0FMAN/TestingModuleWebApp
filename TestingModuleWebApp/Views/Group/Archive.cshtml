@@ -1,11 +1,8 @@
 ﻿@model IEnumerable<Group>
 
 @{
-    ViewData["Title"] = "Группы";
+    ViewData["Title"] = "Архив групп";
 }
-
-<a asp-controller="Group" asp-action="Create" type="button" class="btn btn-sm btn-outline-secondary">Добавить</a>
-<a asp-controller="Group" asp-action="Archive" type="button" class="btn btn-sm btn-outline-secondary">Архив</a>
 
 <div class="album py-5 bg-light">
     <div class="container">
@@ -19,8 +16,8 @@
                             <small class="text-muted">ID Группы: @group.Id</small>
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="btn-group">
-                                    <a asp-controller="Group" asp-action="Edit" asp-route-id="@group.Id" type="button" class="btn btn-sm btn-outline-secondary">Редактировать</a>
-                                    <a asp-controller="Group" asp-action="Archiving" asp-route-id="@group.Id" asp-route-act="1" type="button" class="btn btn-sm btn-outline-secondary">В архив</a>
+                                    <a asp-controller="Group" asp-action="Archiving" asp-route-id="@group.Id" asp-route-act="0" 
+                                    type="button" class="btn btn-sm btn-outline-secondary">Вернуть из архива</a>
                                 </div>
                             </div>
                         </div>
