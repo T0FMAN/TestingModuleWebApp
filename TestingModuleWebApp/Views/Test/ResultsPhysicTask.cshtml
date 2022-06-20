@@ -39,7 +39,7 @@
     @foreach (var task in Model.Item1)
     {
         <tr>
-            <td width="350" class="defaultTd">@task.Name @task.LastName (@task.Group.Title)</td>
+            <td width="350" class="defaultTd">@task.LastName @task.Name (@task.Group.Title)</td>
             <td width="250" class="defaultTd">@task.DateTime</td>
             <td width="200" class="defaultTd">@task.TaskText</td>
                 @if (task.is_x0)
