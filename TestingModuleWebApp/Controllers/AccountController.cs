@@ -23,7 +23,7 @@ namespace TestingModuleWebApp.Controllers
             _signInManager = signInManager;
             _appUserRepository = appUserRepository;
         }
-
+        /*
         [Authorize]
         [HttpGet]
         public async Task<IActionResult> Index() // личный кабинет
@@ -36,20 +36,21 @@ namespace TestingModuleWebApp.Controllers
             var user = await _appUserRepository.GetByContext(User);
 
             return View(user);
-        }
+        }*/
 
         [HttpGet]
         public IActionResult Login()
         {
-            var response = new LoginViewModel();
+            var VM = new LoginViewModel();
 
-            return View(response);
+            return View(VM);
         }
 
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel loginViewModel)
         {
-            if (!ModelState.IsValid) return View(loginViewModel);
+            if (!ModelState.IsValid) 
+                return View(loginViewModel);
 
             var user = await _userManager.FindByEmailAsync(loginViewModel.EmailAddress);
 
@@ -62,9 +63,7 @@ namespace TestingModuleWebApp.Controllers
                     var result = await _signInManager.PasswordSignInAsync(user, loginViewModel.Password, false, false);
 
                     if (result.Succeeded)
-                    {
                         return RedirectToAction("Index", "Home");
-                    }
                 }
                 TempData["Error"] = "Неправильные данные";
                 return View(loginViewModel);

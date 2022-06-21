@@ -32,7 +32,6 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                @*<a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Модуль тестирования</a>*@
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -44,11 +43,6 @@
                         </li>
                         @if (SignInManager.IsSignedIn(User))
                         {
-                            @*<li class="nav-item">
-                                <a class="nav-link" asp-controller="Test" asp-action="Index">Тесты</a>
-                            </li>*@
-                            @*@if (!User.IsInRole("user"))
-                            {*@
                                 <li class="nav-item">
                                     <a class="nav-link" asp-controller="Test" asp-action="Results" asp-route-title="Сквозная задача по физике">Результаты</a>
                                 </li>
@@ -58,14 +52,10 @@
                                     <li class="nav-item">
                                         <a class="nav-link" asp-controller="User" asp-action="Index">Пользователи</a>
                                     </li>
-                                    @*<li class="nav-item">
-                                        <a class="nav-link" asp-controller="Tutor" asp-action="Index">Преподаватели</a>
-                                    </li>*@
                                     <li class="nav-item">
                                         <a class="nav-link" asp-controller="Group" asp-action="Index">Группы</a>
                                     </li>
                                 }
-                            @*}*@
                         }
                     </ul>
                     @if (SignInManager.IsSignedIn(User))
@@ -76,22 +66,12 @@
                                 {
                                     <label>
                                         Admin
-                                        @*<a class="nav-link" asp-controller="AdminPanel" asp-action="Index">Admin</a>*@
                                     </label>
                                 }
-                                else if (User.IsInRole("tutor"))
+                                @*else if (User.IsInRole("tutor"))
                                 {
                                     <label>
                                         @user.FirstName @user.LastName
-                                        @*<a class="nav-link" asp-controller="Account" asp-action="Index">
-                                            @user.FirstName @user.LastName</a>*@
-                                    </label>
-                                }
-                                @*else
-                                {
-                                    <label>
-                                        <a class="nav-link" asp-controller="Account" asp-action="Index">
-                                            @user.FirstName @user.LastName @user.Group?.Title</a>
                                     </label>
                                 }*@
                                 <span>&nbsp;|&nbsp;</span>

@@ -9,6 +9,7 @@ using TestingModuleWebApp.Extensions;
 using TestingModuleWebApp.Interfaces;
 using TestingModuleWebApp.Models;
 using TestingModuleWebApp.ViewModels;
+using static TestingModuleWebApp.Extensions.PhyExtensions;
 
 namespace TestingModuleWebApp.Controllers
 {
@@ -128,55 +129,6 @@ namespace TestingModuleWebApp.Controllers
             var model = SetTask();
 
             return View(model);
-        }
-
-        static PhysicTask SetTask()
-        {
-            var x0 = GetNumber(false, 0, 20);
-            var u0 = GetNumber(true, 1, 20);
-            var a0 = GetNumber(false, 1, 20);
-
-            var task = new PhysicTask
-            {
-                x0 = x0,
-                u0 = u0,
-                a0 = a0,
-                m = GetNumber(false, 1, 15),
-                t = 2,
-                zE = GetNumber(false, 5, 55),
-                R = GetNumber(false, 2, 15),
-
-                TaskText = $"x = {x0}{FormatU0(u0)}t + {a0 / 2}t²",
-            };
-
-            static string FormatU0(double number)
-            {
-                if (number < 0)
-                    return $" - {number * -1}";
-                else return $" + {number}";
-            }
-
-            static double GetNumber(bool isRndEqual, int min, int max)
-            {
-                Random random = new();
-
-                int number = 0;
-
-                while (number == 0)
-                    number = random.Next(min, max);
-
-                if (isRndEqual)
-                {
-                    int equal = random.Next(2);
-
-                    if (equal == 0)
-                        number *= -1;
-                }
-
-                return number;
-            }
-
-            return task;
         }
 
         [HttpPost]

@@ -1,12 +1,37 @@
-﻿using TestingModuleWebApp.Models;
+﻿using System.Net;
+using System.Net.Mail;
+using TestingModuleWebApp.Models;
 
 namespace TestingModuleWebApp.Extensions
 {
     public static class MailExtensions
     {
-        public static void SendMail(this PhysicTask task, string groupTitle)
+        public static void SendMail(this PhysicTask task, string groupTitle) // добавить файл json и переделать метод
         {
-            var messageText = PrepareBodyMessage(task);
+            try
+            {
+                var message = new MailMessage();
+                var smtp = new SmtpClient();
+
+                var messageText = PrepareBodyMessage(task);
+
+                message.From = new MailAddress("Модуль тестирования");
+                message.To.Add(new MailAddress(""));
+                message.Subject = $"Новое решение сквозной задачи от {task.LastName} {task.Name} ({groupTitle})";
+                message.Body = messageText;
+
+                smtp.Port = 587;
+                smtp.Host = "smtp.gmail.com";
+                smtp.EnableSsl = true;
+                smtp.UseDefaultCredentials = false;
+                smtp.Credentials = new NetworkCredential("FromMailAddress", "password");
+                smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+                smtp.Send(message);
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
 
         static string PrepareBodyMessage(PhysicTask task)
