@@ -177,5 +177,5 @@ function validate(node, text) {
 
 	console.log(`${text} - ${value}`);
 
-	return value;
+	return value.replace('.', ',');
 }
