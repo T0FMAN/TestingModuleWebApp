@@ -166,8 +166,9 @@ function validate(node, text) {
 
 	if (!isValid)
 		return value;
-
-	var parse = parseFloat(value);
+	
+	var converted = value.replace(',', '.');
+	var parse = parseFloat(converted);
 
 	if (isNaN(parse)) {
 		alert(`Значение '${text}' имеет неверный формат: ${value}\r\nПримеры ответов:\r\n1) 3,14\r\n2) 56`);
