@@ -1,22 +1,13 @@
-﻿using System.Net;
-using System.Net.Mail;
-
-namespace TestingModuleWebApp.Models
+﻿namespace TestingModuleWebApp.Models
 {
     public class MailerMessage
     {
-        public MailAddress FromAdress { get; private set; }
-        public MailAddress ToAdress { get; private set; }
-        public string? Body { get; private set; }
-        public string? Subject { get; private set; }
-        public NetworkCredential Credential { get; private set; }
+        public static string FromAdress { get; private set; }
+        public static string ToAdress_PhyTask { get; private set; }
 
-        public MailerMessage(MailAddress fromAdress, MailAddress toAdress, string body, string subject)
+        static MailerMessage()
         {
-            FromAdress = fromAdress;
-            ToAdress = toAdress;
-            Body = body;
-            Subject = subject;
+
         }
     }
 }

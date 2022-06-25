@@ -95,8 +95,9 @@ async function inputName() {
 							   <p></p>
 								<label>Группа:</label>
 							    ${newStr}
+<p></p>
 							   <div>
-									<button id="send" onclick="sendData()">Ответить</button>
+									<button class="btn btn-outline-success float-right" id="send" onclick="sendData()">Ответить</button>
 							   </div>`;
 }
 
@@ -121,7 +122,7 @@ async function sendData() {
 
 				header.innerHTML = `<h2 class="title">${result_str}</h2>`;
 
-				listContainer.innerHTML = '<label class="control-label">Данный результат отправлен преподавателю.<p></p>Желаете пройти тест еще раз?</label><button onclick="history.go()">Начать заново</button>';
+				listContainer.innerHTML = '<label class="control-label">Данный результат отправлен преподавателю.<p></p>Желаете пройти тест еще раз?</label><button class="btn btn-outline-secondary" onclick="history.go()">Начать заново</button>';
 
 				load = false;
 			});

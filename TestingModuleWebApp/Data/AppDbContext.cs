@@ -8,7 +8,7 @@ namespace TestingModuleWebApp.Data
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
-
+            //Database.EnsureCreated();
         }
         public DbSet<Group> Groups { get; set; }
         public DbSet<Tutor> Tutors { get; set; }

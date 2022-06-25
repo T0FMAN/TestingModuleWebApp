@@ -1,5 +1,6 @@
-﻿using System.Net;
-using System.Net.Mail;
+﻿using MailKit.Net.Smtp;
+using MimeKit;
+using System.Net;
 using TestingModuleWebApp.Models;
 
 namespace TestingModuleWebApp.Extensions
@@ -8,29 +9,35 @@ namespace TestingModuleWebApp.Extensions
     {
         public static void SendMail(this PhysicTask task, string groupTitle) // добавить файл json и переделать метод
         {
+            var bodyMessage = PrepareBodyMessage(task);
+
             try
             {
-                var message = new MailMessage();
-                var smtp = new SmtpClient();
+                using (var smtp = new SmtpClient())
+                {
+                    smtp.Connect("smtp.yandex.ru", 465, true);
+                    smtp.Authenticate("testingmodule@yandex.ru", "klvjlcvijetxmeen");
 
-                var messageText = PrepareBodyMessage(task);
+                    var bodyBuilder = new BodyBuilder
+                    {
+                        TextBody = bodyMessage
+                    };
 
-                message.From = new MailAddress("Модуль тестирования");
-                message.To.Add(new MailAddress(""));
-                message.Subject = $"Новое решение сквозной задачи от {task.LastName} {task.Name} ({groupTitle})";
-                message.Body = messageText;
+                    var msg = new MimeMessage()
+                    {
+                        Subject = "TEMA",
+                        Body = bodyBuilder.ToMessageBody(),
+                    };
 
-                smtp.Port = 587;
-                smtp.Host = "smtp.gmail.com";
-                smtp.EnableSsl = true;
-                smtp.UseDefaultCredentials = false;
-                smtp.Credentials = new NetworkCredential("FromMailAddress", "password");
-                smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
-                smtp.Send(message);
+                    msg.To.Add(MailboxAddress.Parse("valera.elikomov2@gmail.com"));
+                    msg.From.Add(new MailboxAddress("module", "testingmodule@yandex.ru"));
+
+                    smtp.Send(msg);
+                }
             }
             catch (Exception ex)
             {
-
+                
             }
         }
 
